@@ -1,7 +1,6 @@
-#ifndef VARIABLE_H
-#define VARIABLE_H
+#ifndef VARIABLE_HPP
+#define VARIABLE_HPP
 
-#include "Variable.cpp"
 #include <string>
 
 class Variable {
