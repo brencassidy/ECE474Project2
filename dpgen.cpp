@@ -25,28 +25,32 @@ vector<Variable> getVars(string fileName) {
 	string delimiter = ", ";
 	vector<Variable> varList;
 	Variable tempVar;
-	int bit;
 	int pos;
 
-	iFile.open(fileName);
+	//iFile.open(fileName);
+	iFile.open("C:/Users/evanj/OneDrive/SchoolWork/4Senior/574/ECE474Project2/assignment_2_circuits/474a_circuit1.txt");
+	/*iFile.open("C:/Users/evanj/OneDrive/SchoolWork/4Senior/574/ECE474Project2/assignment_2_circuits/474a_circuit2.txt");
+	iFile.open("C:/Users/evanj/OneDrive/SchoolWork/4Senior/574/ECE474Project2/assignment_2_circuits/474a_circuit3.txt");
+	iFile.open("C:/Users/evanj/OneDrive/SchoolWork/4Senior/574/ECE474Project2/assignment_2_circuits/474a_circuit4.txt");
+	iFile.open("C:/Users/evanj/OneDrive/SchoolWork/4Senior/574/ECE474Project2/assignment_2_circuits/574a_circuit5.txt");
+	iFile.open("C:/Users/evanj/OneDrive/SchoolWork/4Senior/574/ECE474Project2/assignment_2_circuits/574a_circuit6.txt");*/
 
 	if (iFile.is_open()) {
 		while (!iFile.eof()) {
 			//Read first keyword to check type
 			getline(iFile, line);
 
-			if (line.find("=") == string::npos) {
+			if (line.find("=") == string::npos && !line.empty()) {
 				istringstream lineStream(line);
 				lineStream >> currType >> bitWidth;
 				getline(lineStream, varNames);
 				varNames = varNames.substr(1, varNames.length() - 1);
 
 				size_t begin = bitWidth.find_first_of("01234456789");
-				bit = stoi(bitWidth.substr(begin, bitWidth.length() - 1));
 
 				while ((pos = varNames.find(delimiter)) != string::npos) {
 					tempVar.setVarType(currType);
-					tempVar.setBitWidth(bit);
+					tempVar.setBitWidth(stoi(bitWidth.substr(begin, bitWidth.length() - 1)));
 
 					currName = varNames.substr(0, pos);
 					varNames.erase(0, pos + delimiter.length());
@@ -57,7 +61,7 @@ vector<Variable> getVars(string fileName) {
 
 				if (!varNames.empty()) {
 					tempVar.setVarType(currType);
-					tempVar.setBitWidth(bit);
+					tempVar.setBitWidth(stoi(bitWidth.substr(begin, bitWidth.length() - 1)));
 					tempVar.setName(varNames);
 					varList.push_back(tempVar);
 				}
@@ -68,7 +72,9 @@ vector<Variable> getVars(string fileName) {
 		}
 	}
 
-	varList.resize(varList.size() - 1);
+	for (auto i : varList) {
+		i.toString();
+	}
 
 	return varList;
 }
@@ -76,7 +82,7 @@ vector<Variable> getVars(string fileName) {
 int main(int argc, char *argv[]) {
 
 	//Step 1: Read file input line by line
-	vector<Variable> vars = getVars(argv[1]);
+	vector<Variable> vars = getVars("balls");
 
 	//Convert to Verilog line of code and export to .v
 	return 0;
