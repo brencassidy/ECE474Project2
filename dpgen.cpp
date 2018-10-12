@@ -10,16 +10,23 @@ Description:
 #include <string>
 #include <iostream>
 #include <fstream>
+#include <sstream>
 #include <vector>
-
+#include "Variable.hpp"
 using namespace std;
 
-int main(int argc, char *argv[]) {
-
-	//Step 1: Read file input line by line
+vector<Variable> readFile(string fileName) {
 	ifstream iFile;
 	string line;
-	string fileText;
+	string currType;
+	string bitWidth;
+	string varNames;
+	string currName;
+	string delimiter = ", ";
+	vector<Variable> varList;
+	Variable tempVar;
+	int bit;
+	int pos;
 
 	iFile.open("C:/Users/evanj/OneDrive/SchoolWork/4Senior/574/ECE474Project2/assignment_2_circuits/474a_circuit1.txt");
 
@@ -27,12 +34,51 @@ int main(int argc, char *argv[]) {
 		while (!iFile.eof()) {
 			//Read first keyword to check type
 			getline(iFile, line);
-			fileText += line + "\n";
-		}
-	} else return -1;
 
-	cout << fileText;
+			if (line.find("=") == string::npos) {
+				istringstream lineStream(line);
+				lineStream >> currType >> bitWidth;
+				getline(lineStream, varNames);
+				varNames = varNames.substr(1, varNames.length() - 1);
+
+				size_t begin = bitWidth.find_first_of("01234456789");
+				bit = stoi(bitWidth.substr(begin, bitWidth.length() - 1));
+
+				while ((pos = varNames.find(delimiter)) != string::npos) {
+					tempVar.setVarType(currType);
+					tempVar.setBitWidth(bit);
+
+					currName = varNames.substr(0, pos);
+					varNames.erase(0, pos + delimiter.length());
+					tempVar.setName(currName);
+
+					varList.push_back(tempVar);
+				}
+
+				if (!varNames.empty()) {
+					tempVar.setVarType(currType);
+					tempVar.setBitWidth(bit);
+					tempVar.setName(varNames);
+					varList.push_back(tempVar);
+				}
+			}
+			else if (line.find("=") != string::npos) {
+				//PARSE OPERATORS
+			}
+		}
+	}
+
+	varList.resize(varList.size() - 1);
+
+	return varList;
+}
+
+int main(int argc, char *argv[]) {
+
+	//Step 1: Read file input line by line
+	readFile("balls");
+
 	
 	//Convert to Verilog line of code and export to .v
 	return 0;
-};
+}

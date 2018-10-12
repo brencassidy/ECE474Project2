@@ -1,4 +1,3 @@
-#include <stdio.h>
 #include "Variable.hpp"
 
 
@@ -30,8 +29,12 @@ void Variable::setName(std::string name){
     this->name = name;
 }
 void Variable::setVarType(std::string varType){
-    this->vartype = vartype;
+    this->vartype = varType;
 }
 void Variable::setBitWidth(int bitwidth){
     this->bitwidth = bitwidth;
+}
+
+void Variable::toString() {
+	std::cout << "Var Name: " << name << " Var type: " << vartype << " Bit Width: " << bitwidth << std::endl;
 }

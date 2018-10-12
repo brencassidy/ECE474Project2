@@ -2,6 +2,7 @@
 #define VARIABLE_HPP
 
 #include <string>
+#include <iostream>
 
 class Variable {
 private:
@@ -22,7 +23,8 @@ public:
     void setName(std::string name);
     void setVarType(std::string varType);
     void setBitWidth(int bitwidth);
-    
+
+	void toString();
 };
 
 #endif
