@@ -15,7 +15,7 @@ Description:
 #include "Variable.hpp"
 using namespace std;
 
-vector<Variable> readFile(string fileName) {
+vector<Variable> getVars(string fileName) {
 	ifstream iFile;
 	string line;
 	string currType;
@@ -28,7 +28,7 @@ vector<Variable> readFile(string fileName) {
 	int bit;
 	int pos;
 
-	iFile.open("C:/Users/evanj/OneDrive/SchoolWork/4Senior/574/ECE474Project2/assignment_2_circuits/474a_circuit1.txt");
+	iFile.open(fileName);
 
 	if (iFile.is_open()) {
 		while (!iFile.eof()) {
@@ -76,9 +76,8 @@ vector<Variable> readFile(string fileName) {
 int main(int argc, char *argv[]) {
 
 	//Step 1: Read file input line by line
-	readFile("balls");
+	vector<Variable> vars = getVars(argv[1]);
 
-	
 	//Convert to Verilog line of code and export to .v
 	return 0;
 }
