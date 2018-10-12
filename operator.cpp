@@ -7,3 +7,41 @@
 //
 
 #include "operator.hpp"
+#include "Variable.hpp"
+
+def adder(Variable.getname, , int sum) {
+
+}
+def subtractor(Variable.getname, , int difference) {
+
+}
+def reg(,) {
+
+}
+def multiply(,,) {
+
+}
+def compare(,,) {
+
+}
+def MUX(,,) {
+
+}
+def shiftRight(,) {
+
+}
+def shiftLeft(,) {
+
+}
+def divide(,,) {
+
+}
+def mod() {
+
+}
+def increment() {
+
+}
+def decrement() {
+
+}
