@@ -1,5 +1,5 @@
 #include <stdio.h>
-#include "Variable.h"
+#include "Variable.hpp"
 
 
 Variable::Variable() { //default constructor
