@@ -1,0 +1,8 @@
+input UInt32 a
+input UInt16 b
+output UInt8 c
+
+wire UInt8 cwire
+
+cwire = a + b
+c = cwire

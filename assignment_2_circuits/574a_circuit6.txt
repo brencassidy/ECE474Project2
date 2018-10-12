@@ -1,0 +1,13 @@
+input Int64 a, b, c, zero
+
+output Int64 z
+
+wire Int64 e, f, g, zwire
+wire Int1 gEQz  
+
+e = a - 1
+f = c + 1
+g = a % c  
+gEQz = g == zero
+zwire = gEQz ? e : f 
+z = zwire

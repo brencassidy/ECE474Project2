@@ -1,0 +1,22 @@
+input Int64 a, b, c
+
+output Int32 z, x
+
+wire Int64 d, e, f, g, h 
+wire Int1 dLTe, dEQe 
+wire Int64 xrin, zrin
+register Int64 greg, hreg
+
+d = a + b
+e = a + c
+f = a - b  
+dEQe = d == e
+dLTe = d < e
+g = dLTe ? d : e 
+h = dEQe ? g : f 
+greg = g
+hreg = h
+xrin = hreg << dLTe
+zrin = greg >> dEQe
+x = xrin
+z = zrin

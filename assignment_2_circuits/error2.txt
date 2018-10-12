@@ -1,0 +1,16 @@
+input Int8 a, b, c
+
+output Int8 z
+output Int16 x
+
+wire Int8 e			// missing wire
+wire Int16 f, g
+wire Int16 xwire
+
+d = a + b
+e = a + c
+g = d > e
+z = g ? d : e
+f = a * c
+xwire = f - d  
+x = xwire
