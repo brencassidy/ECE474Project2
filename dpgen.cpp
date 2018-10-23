@@ -64,7 +64,8 @@ int main(int argc, char *argv[]) {
 	vector<Variable> currOperand;
 
 	//iFile.open("C:/Users/cassi/Documents/School/UofA7th Sem/CSCV 352/ECE474Project2/ECE474Project2/474a_circuit1.txt");
-	iFile.open("Test.txt");
+	iFile.open("C:/Users/evanj/OneDrive/SchoolWork/4Senior/574/ECE474Project2/assignment_2_circuits/474a_circuit1.txt");
+	//iFile.open("Test.txt");
 
 	if (iFile.is_open()) {
 		while (!iFile.eof()) {
@@ -132,9 +133,9 @@ int main(int argc, char *argv[]) {
 				cout << callOperator(currOperand, operand, operandCount);
 				operandCount += 1;
 			}
-			//for (auto i : allVariables) {
-			//		i.toString();
-			//}
+			/*for (auto i : allVariables) {
+					i.toString();
+			}*/
 			//Call Operand function
 		}
 	}
