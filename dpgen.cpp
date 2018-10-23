@@ -16,36 +16,51 @@ using namespace std;
 
 string callOperator(vector<Variable> variables, string operand, int num) {
 	string toReturn;
-	if (operand.compare("=") == 0)	//REG
-		toReturn = "Reg" + std::to_string(num) + " " + "REG(" + variables.at(1).getName() + ", " + variables.at(0).getName() + ");\n";
-	else if (operand.compare("+") == 0)	//ADD
-		toReturn = "Add" + std::to_string(num) + " " + "ADD(" + variables.at(1).getName() + ", " + variables.at(2).getName() + ", " + variables.at(0).getName() + ");\n";
-	else if (operand.compare("-") == 0)	//SUB
-		toReturn = "Sub" + std::to_string(num) + " " + "SUB(" + variables.at(1).getName() + ", " + variables.at(2).getName() + ", " + variables.at(0).getName() + ");\n";
-	else if (operand.compare("*") == 0)	//MUL
-		toReturn = "Mul" + std::to_string(num) + " " + "MUL(" + variables.at(1).getName() + ", " + variables.at(2).getName() + ", " + variables.at(0).getName() + ");\n";
-	else if (operand.compare(">") == 0)	//COMP (gt output)
-		toReturn = "COMP" + to_string(num) + " COMP(" + variables.at(1).getName() + ", " + variables.at(2).getName() + ", " + variables.at(0).getName() + ", 0, 0);\n";
-	else if (operand.compare("<") == 0)	//COMP (lt output)
-		toReturn = "COMP" + to_string(num) + " COMP(" + variables.at(1).getName() + ", " + variables.at(2).getName() + ", 0, " + variables.at(0).getName() + ", 0);\n";
-	else if (operand.compare("==") == 0)	//COMP (eq output)
-		toReturn = "COMP" + to_string(num) + " COMP(" + variables.at(1).getName() + ", " + variables.at(2).getName() + ", 0, 0, " + variables.at(0).getName() + ");\n";
-	else if (operand.compare("?") == 0)	//MUX2x1
-		toReturn = "MUX2x1" + to_string(num) + " MUX2x1(" + variables.at(2).getName() + ", " + variables.at(3).getName() + ", " + variables.at(1).getName() + ", " + variables.at(0).getName() + ");\n";
-	else if (operand.compare(">>")== 0)	//SHR
-		toReturn = "SHR" + to_string(num) + " " + "SHR(" + variables.at(1).getName() + "," + variables.at(2).getName() + "," + variables.at(0).getName() + ");\n";
-	else if (operand.compare("<<")== 0)	//SHL
-		toReturn = "SHL" + to_string(num) + " " + "SHL(" + variables.at(1).getName() + "," + variables.at(2).getName() + "," + variables.at(0).getName() + ");\n";
-	else if (operand.compare("/") == 0)	//DIV
-		toReturn = "div" + to_string(num) + " " + "DIV(" + variables.at(1).getName() + "," + variables.at(2).getName() + "," + variables.at(0).getName() + ");\n";
-	else if (operand.compare("%") == 0)	//MOD
-		toReturn = "mod" + to_string(num) + " " + "MOD(" + variables.at(1).getName() + "," + variables.at(2).getName() + "," + variables.at(0).getName() + ");\n";
-	else if (operand.compare("+") == 0)	//INC
-		toReturn = "inc" + to_string(num) + " " + "INC(" + variables.at(1).getName() + "," + variables.at(0).getName() + ");\n";
-	else if (operand.compare("-") == 0)	//DEC
-		toReturn = "dec" + to_string(num) + " " + "DEC(" + variables.at(1).getName() + "," + variables.at(0).getName() + ");\n";
-	else
+	if (operand.compare("=") == 0) {	//REG
+		toReturn = "REG reg" + std::to_string(num) + "(" + variables.at(1).getName() + ", " + variables.at(0).getName() + ");\n";
+	}
+	else if (operand.compare("+") == 0)	{ //ADD
+		toReturn = "ADD add" + std::to_string(num) + "(" + variables.at(1).getName() + ", " + variables.at(2).getName() + ", " + variables.at(0).getName() + ");\n";
+	}
+	else if (operand.compare("-") == 0) {	//SUB
+		toReturn = "SUB sub" + std::to_string(num) + "(" + variables.at(1).getName() + ", " + variables.at(2).getName() + ", " + variables.at(0).getName() + ");\n";
+	}
+	else if (operand.compare("*") == 0) {	//MUL
+		toReturn = "MUL mul" + std::to_string(num) + "(" + variables.at(1).getName() + ", " + variables.at(2).getName() + ", " + variables.at(0).getName() + ");\n";
+	}
+	else if (operand.compare(">") == 0) {	//COMP (gt output)
+		toReturn = "COMP comp" + to_string(num) + "(" + variables.at(1).getName() + ", " + variables.at(2).getName() + ", " + variables.at(0).getName() + ", 0, 0);\n";
+	}
+	else if (operand.compare("<") == 0) {	//COMP (lt output)
+		toReturn = "COMP comp" + to_string(num) + "(" + variables.at(1).getName() + ", " + variables.at(2).getName() + ", 0, " + variables.at(0).getName() + ", 0);\n";
+	}
+	else if (operand.compare("==") == 0) {	//COMP (eq output)
+		toReturn = "COMP comp" + to_string(num) + "(" + variables.at(1).getName() + ", " + variables.at(2).getName() + ", 0, 0, " + variables.at(0).getName() + ");\n";
+	}
+	else if (operand.compare("?") == 0) {	//MUX2x1
+		toReturn = "MUX2x1 mux" + to_string(num) + "(" + variables.at(2).getName() + ", " + variables.at(3).getName() + ", " + variables.at(1).getName() + ", " + variables.at(0).getName() + ");\n";
+	}
+	else if (operand.compare(">>")== 0) {	//SHR
+		toReturn = "SHR shr" + to_string(num) + "(" + variables.at(1).getName() + "," + variables.at(2).getName() + "," + variables.at(0).getName() + ");\n";
+	}
+	else if (operand.compare("<<")== 0) {	//SHL
+		toReturn = "SHL shl" + to_string(num) + "(" + variables.at(1).getName() + "," + variables.at(2).getName() + "," + variables.at(0).getName() + ");\n";
+	}
+	else if (operand.compare("/") == 0) {	//DIV
+		toReturn = "DIV div" + to_string(num) + "(" + variables.at(1).getName() + "," + variables.at(2).getName() + "," + variables.at(0).getName() + ");\n";
+	}
+	else if (operand.compare("%") == 0) {	//MOD
+		toReturn = "MOD mod" + to_string(num) + "(" + variables.at(1).getName() + "," + variables.at(2).getName() + "," + variables.at(0).getName() + ");\n";
+	}
+	else if (operand.compare("+") == 0) {	//INC
+		toReturn = "INC inc" + to_string(num) + "(" + variables.at(1).getName() + "," + variables.at(0).getName() + ");\n";
+	}
+	else if (operand.compare("-") == 0)	{ //DEC
+		toReturn = "DEC dec" + to_string(num) + "(" + variables.at(1).getName() + "," + variables.at(0).getName() + ");\n";
+	}
+	else {
 		toReturn = "FAILED";
+	}
 	return toReturn;
 
 }
@@ -64,7 +79,8 @@ int main(int argc, char *argv[]) {
 	vector<Variable> currOperand;
 
 	//iFile.open("C:/Users/cassi/Documents/School/UofA7th Sem/CSCV 352/ECE474Project2/ECE474Project2/474a_circuit1.txt");
-	iFile.open("C:/Users/evanj/OneDrive/SchoolWork/4Senior/574/ECE474Project2/assignment_2_circuits/474a_circuit1.txt");
+	//iFile.open("C:/Users/evanj/OneDrive/SchoolWork/4Senior/574/ECE474Project2/assignment_2_circuits/474a_circuit1.txt");
+	iFile.open("./assignment_2_circuits/474a_circuit1.txt"); //THIS IS THE ONE BOYS
 	//iFile.open("Test.txt");
 
 	if (iFile.is_open()) {
