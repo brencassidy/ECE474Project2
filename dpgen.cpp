@@ -14,6 +14,22 @@ the top Module verilog file
 
 using namespace std;
 
+double critPathArray[12][6] = {
+    {2.616, 2.644, 2.879, 3.061, 3.602, 3.966},
+    {2.704, 3.713, 4.924, 5.638, 7.270, 9.566},
+    {3.024, 3.412, 4.890, 5.569, 7.253, 9.566},
+    {2.438, 2.651, 7.453, 7.811, 12.395, 15.354},
+    {3.031, 3.934, 5.949, 6.256, 7.264, 8.416},
+    {4.083, 4.115, 4.815, 5.623, 8.079, 8.766},
+    {3.644, 4.007, 5.178, 6.460, 8.819, 11.095},
+    {3.614, 3.980, 5.152, 6.549, 8.565, 11.220},
+    {0.619, 2.144, 15.349, 33.093, 86.312, 243.233},
+    {0.758, 2.149, 16.078, 35.563, 88.142, 250.583},
+    {1.792, 2.218, 3.111, 3.471, 4.347, 6.200},
+    {1.792, 2.218, 3.108, 3.701, 4.685, 6.503},
+                               
+                               };
+
 string callOperator(vector<Variable> variables, string operand, int num) {
 	string toReturn;
 	if (operand.compare("=") == 0) {	//REG
@@ -65,7 +81,44 @@ string callOperator(vector<Variable> variables, string operand, int num) {
 
 }
 
+double calcOperationTime(vector<Variable> variables, string operand) {
+    int maxBitWidth;
+    int operationIndex;
+    int operandCount = variables.size();
+    if(operandCount == 3)
+        maxBitWidth = std::max(std::max(variables.at(0).getBitWidth(), variables.at(1).getBitWidth()), variables.at(2).getBitWidth());
+    else
+        maxBitWidth = std::max(variables.at(0).getBitWidth(), variables.at(1).getBitWidth());
+    
+    //mapping of operand to operation
+    if (operand.compare("=") != 0) { //temporary fix until register assingment is handled
+        if (operand.compare("+") == 0) operationIndex = 1;
+        else if (operand.compare("-") == 0) operationIndex = 2;
+        else if (operand.compare("*") == 0) operationIndex = 3;
+        else if (operand.compare("==") == 0 || operand.compare(">") == 0 || operand.compare("<") == 0) operationIndex = 4;
+        else if (operand.compare("?") == 0) operationIndex = 5;
+        else if (operand.compare(">>") == 0) operationIndex = 6;
+        else if (operand.compare("<<") == 0) operationIndex = 7;
+        else if (operand.compare("/") == 0) operationIndex = 8;
+        else if (operand.compare("%") == 0) operationIndex = 9;
+        //else if (operand.compare("") == 0) operationIndex = 10; //FIXME: change this to deal with INC
+        //else if (operand.compare("") == 0) operationIndex = 11; //FIXME: change this to deal with DEC
+    } //FIXME handle register assignments
+    else
+        return 0;
+    
+    double critPath = critPathArray[operationIndex][maxBitWidth] + critPathArray[0][maxBitWidth]; //sum of operation mapped to array above plus register assignment for maxBitWidth
+
+    return critPath;
+}
+
 int main(int argc, char *argv[]) {
+    
+    if(argc != 3) {
+        cout << "Usage: main inputFile outputFile" << endl;
+        return EXIT_FAILURE;
+    }
+    
 	int i, pos, operandCount = 0, count = 0;
 	bool operation, validVar = false;
 
@@ -77,10 +130,12 @@ int main(int argc, char *argv[]) {
 	Variable tempVar;
 	vector<Variable> allVariables;
 	vector<Variable> currOperand;
+    
+    double critPath = 0.0;
 
 	//iFile.open("C:/Users/cassi/Documents/School/UofA7th Sem/CSCV 352/ECE474Project2/ECE474Project2/474a_circuit1.txt");
 	//iFile.open("C:/Users/evanj/OneDrive/SchoolWork/4Senior/574/ECE474Project2/assignment_2_circuits/474a_circuit1.txt");
-	iFile.open("./assignment_2_circuits/474a_circuit1.txt"); //THIS IS THE ONE BOYS
+	iFile.open(argv[1]); //THIS IS THE ONE BOYS
 	//iFile.open("Test.txt");
 
 	if (iFile.is_open()) {
@@ -147,6 +202,8 @@ int main(int argc, char *argv[]) {
 					count += 1;
 				}
 				cout << callOperator(currOperand, operand, operandCount);
+                critPath+= calcOperationTime(currOperand, operand); //FIXME: not sure if crit path is some of all opeations or just longest op
+                //cout << critPath << endl; //debugging purposes
 				operandCount += 1;
 			}
 			/*for (auto i : allVariables) {
@@ -158,6 +215,8 @@ int main(int argc, char *argv[]) {
 	else {
 		return -1;
 	}
+    
+    
 
 	//Convert to Verilog line of code and export to .v
 	return 0;
