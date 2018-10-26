@@ -27,90 +27,9 @@ double critPathArray[12][6] = {
     {0.758, 2.149, 16.078, 35.563, 88.142, 250.583},
     {1.792, 2.218, 3.111, 3.471, 4.347, 6.200},
     {1.792, 2.218, 3.108, 3.701, 4.685, 6.503},
-                               
-                               };
-
-string callOperator(vector<Variable> variables, string operand, int num) {
-	string toReturn;
-	if (operand.compare("=") == 0) {	//REG
-		toReturn = "REG reg" + std::to_string(num) + "(" + variables.at(1).getName() + ", " + variables.at(0).getName() + ");\n";
-	}
-	else if (operand.compare("+") == 0)	{ //ADD
-		toReturn = "ADD add" + std::to_string(num) + "(" + variables.at(1).getName() + ", " + variables.at(2).getName() + ", " + variables.at(0).getName() + ");\n";
-	}
-	else if (operand.compare("-") == 0) {	//SUB
-		toReturn = "SUB sub" + std::to_string(num) + "(" + variables.at(1).getName() + ", " + variables.at(2).getName() + ", " + variables.at(0).getName() + ");\n";
-	}
-	else if (operand.compare("*") == 0) {	//MUL
-		toReturn = "MUL mul" + std::to_string(num) + "(" + variables.at(1).getName() + ", " + variables.at(2).getName() + ", " + variables.at(0).getName() + ");\n";
-	}
-	else if (operand.compare(">") == 0) {	//COMP (gt output)
-		toReturn = "COMP comp" + to_string(num) + "(" + variables.at(1).getName() + ", " + variables.at(2).getName() + ", " + variables.at(0).getName() + ", 0, 0);\n";
-	}
-	else if (operand.compare("<") == 0) {	//COMP (lt output)
-		toReturn = "COMP comp" + to_string(num) + "(" + variables.at(1).getName() + ", " + variables.at(2).getName() + ", 0, " + variables.at(0).getName() + ", 0);\n";
-	}
-	else if (operand.compare("==") == 0) {	//COMP (eq output)
-		toReturn = "COMP comp" + to_string(num) + "(" + variables.at(1).getName() + ", " + variables.at(2).getName() + ", 0, 0, " + variables.at(0).getName() + ");\n";
-	}
-	else if (operand.compare("?") == 0) {	//MUX2x1
-		toReturn = "MUX2x1 mux" + to_string(num) + "(" + variables.at(2).getName() + ", " + variables.at(3).getName() + ", " + variables.at(1).getName() + ", " + variables.at(0).getName() + ");\n";
-	}
-	else if (operand.compare(">>")== 0) {	//SHR
-		toReturn = "SHR shr" + to_string(num) + "(" + variables.at(1).getName() + "," + variables.at(2).getName() + "," + variables.at(0).getName() + ");\n";
-	}
-	else if (operand.compare("<<")== 0) {	//SHL
-		toReturn = "SHL shl" + to_string(num) + "(" + variables.at(1).getName() + "," + variables.at(2).getName() + "," + variables.at(0).getName() + ");\n";
-	}
-	else if (operand.compare("/") == 0) {	//DIV
-		toReturn = "DIV div" + to_string(num) + "(" + variables.at(1).getName() + "," + variables.at(2).getName() + "," + variables.at(0).getName() + ");\n";
-	}
-	else if (operand.compare("%") == 0) {	//MOD
-		toReturn = "MOD mod" + to_string(num) + "(" + variables.at(1).getName() + "," + variables.at(2).getName() + "," + variables.at(0).getName() + ");\n";
-	}
-	else if (operand.compare("+") == 0) {	//INC
-		toReturn = "INC inc" + to_string(num) + "(" + variables.at(1).getName() + "," + variables.at(0).getName() + ");\n";
-	}
-	else if (operand.compare("-") == 0)	{ //DEC
-		toReturn = "DEC dec" + to_string(num) + "(" + variables.at(1).getName() + "," + variables.at(0).getName() + ");\n";
-	}
-	else {
-		toReturn = "FAILED";
-	}
-	return toReturn;
-
-}
-
-double calcOperationTime(vector<Variable> variables, string operand) {
-    int maxBitWidth;
-    int operationIndex;
-    int operandCount = variables.size();
-    if(operandCount == 3)
-        maxBitWidth = std::max(std::max(variables.at(0).getBitWidth(), variables.at(1).getBitWidth()), variables.at(2).getBitWidth());
-    else
-        maxBitWidth = std::max(variables.at(0).getBitWidth(), variables.at(1).getBitWidth());
-    
-    //mapping of operand to operation
-    if (operand.compare("=") != 0) { //temporary fix until register assingment is handled
-        if (operand.compare("+") == 0) operationIndex = 1;
-        else if (operand.compare("-") == 0) operationIndex = 2;
-        else if (operand.compare("*") == 0) operationIndex = 3;
-        else if (operand.compare("==") == 0 || operand.compare(">") == 0 || operand.compare("<") == 0) operationIndex = 4;
-        else if (operand.compare("?") == 0) operationIndex = 5;
-        else if (operand.compare(">>") == 0) operationIndex = 6;
-        else if (operand.compare("<<") == 0) operationIndex = 7;
-        else if (operand.compare("/") == 0) operationIndex = 8;
-        else if (operand.compare("%") == 0) operationIndex = 9;
-        //else if (operand.compare("") == 0) operationIndex = 10; //FIXME: change this to deal with INC
-        //else if (operand.compare("") == 0) operationIndex = 11; //FIXME: change this to deal with DEC
-    } //FIXME handle register assignments
-    else
-        return 0;
-    
-    double critPath = critPathArray[operationIndex][maxBitWidth] + critPathArray[0][maxBitWidth]; //sum of operation mapped to array above plus register assignment for maxBitWidth
-
-    return critPath;
-}
+};
+string callOperator(vector<Variable> variables, string operand, int num);
+double calcOperationTime(vector<Variable> variables, string operand);
 
 int main(int argc, char *argv[]) {
     
@@ -250,3 +169,54 @@ int main(int argc, char *argv[]) {
     
 	return 0;
 };
+
+string callOperator(vector<Variable> variables, string operand, int num) {
+    string toReturn;
+    if (operand.compare("=") == 0) {    //REG
+        toReturn = "REG reg" + std::to_string(num) + "(" + variables.at(1).getName() + ", " + variables.at(0).getName() + ");\n";
+    }
+    else if (operand.compare("+") == 0)    { //ADD
+        toReturn = "ADD add" + std::to_string(num) + "(" + variables.at(1).getName() + ", " + variables.at(2).getName() + ", " + variables.at(0).getName() + ");\n";
+    }
+    else if (operand.compare("-") == 0) {    //SUB
+        toReturn = "SUB sub" + std::to_string(num) + "(" + variables.at(1).getName() + ", " + variables.at(2).getName() + ", " + variables.at(0).getName() + ");\n";
+    }
+    else if (operand.compare("*") == 0) {    //MUL
+        toReturn = "MUL mul" + std::to_string(num) + "(" + variables.at(1).getName() + ", " + variables.at(2).getName() + ", " + variables.at(0).getName() + ");\n";
+    }
+    else if (operand.compare(">") == 0) {    //COMP (gt output)
+        toReturn = "COMP comp" + to_string(num) + "(" + variables.at(1).getName() + ", " + variables.at(2).getName() + ", " + variables.at(0).getName() + ", 0, 0);\n";
+    }
+    else if (operand.compare("<") == 0) {    //COMP (lt output)
+        toReturn = "COMP comp" + to_string(num) + "(" + variables.at(1).getName() + ", " + variables.at(2).getName() + ", 0, " + variables.at(0).getName() + ", 0);\n";
+    }
+    else if (operand.compare("==") == 0) {    //COMP (eq output)
+        toReturn = "COMP comp" + to_string(num) + "(" + variables.at(1).getName() + ", " + variables.at(2).getName() + ", 0, 0, " + variables.at(0).getName() + ");\n";
+    }
+    else if (operand.compare("?") == 0) {    //MUX2x1
+        toReturn = "MUX2x1 mux" + to_string(num) + "(" + variables.at(2).getName() + ", " + variables.at(3).getName() + ", " + variables.at(1).getName() + ", " + variables.at(0).getName() + ");\n";
+    }
+    else if (operand.compare(">>")== 0) {    //SHR
+        toReturn = "SHR shr" + to_string(num) + "(" + variables.at(1).getName() + "," + variables.at(2).getName() + "," + variables.at(0).getName() + ");\n";
+    }
+    else if (operand.compare("<<")== 0) {    //SHL
+        toReturn = "SHL shl" + to_string(num) + "(" + variables.at(1).getName() + "," + variables.at(2).getName() + "," + variables.at(0).getName() + ");\n";
+    }
+    else if (operand.compare("/") == 0) {    //DIV
+        toReturn = "DIV div" + to_string(num) + "(" + variables.at(1).getName() + "," + variables.at(2).getName() + "," + variables.at(0).getName() + ");\n";
+    }
+    else if (operand.compare("%") == 0) {    //MOD
+        toReturn = "MOD mod" + to_string(num) + "(" + variables.at(1).getName() + "," + variables.at(2).getName() + "," + variables.at(0).getName() + ");\n";
+    }
+    else if (operand.compare("+") == 0) {    //INC
+        toReturn = "INC inc" + to_string(num) + "(" + variables.at(1).getName() + "," + variables.at(0).getName() + ");\n";
+    }
+    else if (operand.compare("-") == 0)    { //DEC
+        toReturn = "DEC dec" + to_string(num) + "(" + variables.at(1).getName() + "," + variables.at(0).getName() + ");\n";
+    }
+    else {
+        toReturn = "FAILED";
+    }
+    return toReturn;
+    
+}
