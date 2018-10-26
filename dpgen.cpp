@@ -13,6 +13,7 @@ the top Module verilog file
 #include "Variable.hpp"
 
 using namespace std;
+//test
 
 double critPathArray[12][6] = {
     {2.616, 2.644, 2.879, 3.061, 3.602, 3.966},
