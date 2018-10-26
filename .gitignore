@@ -1,0 +1,6 @@
+## vscode stuff ##
+*.vscode
+
+## compiled stuff ##
+*.exe
+*.txt
