@@ -124,8 +124,10 @@ int main(int argc, char *argv[]) {
 
 	//Step 1: Read file input line by line
 	ifstream iFile;
+    ofstream oFile;
 	string line, operand, currType, bitWidth, varNames, currName;
 	string delimiter = ", ";
+    string modules;
 
 	Variable tempVar;
 	vector<Variable> allVariables;
@@ -201,11 +203,11 @@ int main(int argc, char *argv[]) {
 						operand = val;
 					count += 1;
 				}
-				cout << callOperator(currOperand, operand, operandCount);
+				modules+= "      " + callOperator(currOperand, operand, operandCount);
                 critPath+= calcOperationTime(currOperand, operand); //FIXME: not sure if crit path is some of all opeations or just longest op
-                //cout << critPath << endl; //debugging purposes
 				operandCount += 1;
 			}
+            //oFile.close();
 			/*for (auto i : allVariables) {
 					i.toString();
 			}*/
@@ -215,9 +217,24 @@ int main(int argc, char *argv[]) {
 	else {
 		return -1;
 	}
+    oFile.open(argv[2]);
+    oFile << "'timescale 1ns / 1ps" << endl << endl;
+    oFile << "module TopModule(";
+    for(Variable var : allVariables) {
+        if (var.getVarType().compare("input") == 0 || var.getVarType().compare("output") == 0) {
+            oFile << var.getName() << ", "; //FIXME: hanlde last comma
+        }
+    }
+    oFile << ");" << endl;
+    for(Variable var : allVariables) {
+        oFile << var.getVarType() << "[" << var.getBitWidth() << ":0] " << var.getName() << ";" << endl;
+    }
+    //FIXME: variable declaration
+    oFile << endl << "   always @(" << /*FIXME: inputs*/ ") begin" << endl;
+    oFile << modules;
+    oFile << "   end" << endl << endl;
+    oFile << "endModule" << endl << endl;
+    oFile << "//Critical Path : " << critPath << "ns" << endl;
     
-    
-
-	//Convert to Verilog line of code and export to .v
 	return 0;
 };
