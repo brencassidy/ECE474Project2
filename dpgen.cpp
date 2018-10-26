@@ -220,3 +220,35 @@ string callOperator(vector<Variable> variables, string operand, int num) {
     return toReturn;
     
 }
+
+double calcOperationTime(vector<Variable> variables, string operand) {
+    int maxBitWidth;
+    int operationIndex;
+    int operandCount = variables.size();
+    if(operandCount == 3)
+        maxBitWidth = std::max(std::max(variables.at(0).getBitWidth(), variables.at(1).getBitWidth()), variables.at(2).getBitWidth());
+    else
+        maxBitWidth = std::max(variables.at(0).getBitWidth(), variables.at(1).getBitWidth());
+    
+    //mapping of operand to operation
+    if (operand.compare("=") != 0) { //temporary fix until register assingment is handled
+        if (operand.compare("+") == 0) operationIndex = 1;
+        else if (operand.compare("-") == 0) operationIndex = 2;
+        else if (operand.compare("*") == 0) operationIndex = 3;
+        else if (operand.compare("==") == 0 || operand.compare(">") == 0 || operand.compare("<") == 0) operationIndex = 4;
+        else if (operand.compare("?") == 0) operationIndex = 5;
+        else if (operand.compare(">>") == 0) operationIndex = 6;
+        else if (operand.compare("<<") == 0) operationIndex = 7;
+        else if (operand.compare("/") == 0) operationIndex = 8;
+        else if (operand.compare("%") == 0) operationIndex = 9;
+        //else if (operand.compare("") == 0) operationIndex = 10; //FIXME: change this to deal with INC
+        //else if (operand.compare("") == 0) operationIndex = 11; //FIXME: change this to deal with DEC
+    } //FIXME handle register assignments
+    else
+        return 0;
+    
+    double critPath = critPathArray[operationIndex][maxBitWidth] + critPathArray[0][maxBitWidth]; //sum of operation mapped to array above plus register assignment for maxBitWidth
+    
+    return critPath;
+}
+
