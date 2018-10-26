@@ -127,7 +127,7 @@ int main(int argc, char *argv[]) {
     ofstream oFile;
 	string line, operand, currType, bitWidth, varNames, currName;
 	string delimiter = ", ";
-    string modules;
+    string modules = "";
 
 	Variable tempVar;
 	vector<Variable> allVariables;
@@ -203,7 +203,7 @@ int main(int argc, char *argv[]) {
 						operand = val;
 					count += 1;
 				}
-				modules+= "      " + callOperator(currOperand, operand, operandCount);
+				modules += "      " + callOperator(currOperand, operand, operandCount);
                 critPath+= calcOperationTime(currOperand, operand); //FIXME: not sure if crit path is some of all opeations or just longest op
 				operandCount += 1;
 			}
@@ -217,20 +217,32 @@ int main(int argc, char *argv[]) {
 	else {
 		return -1;
 	}
+    //writing to output file
     oFile.open(argv[2]);
     oFile << "'timescale 1ns / 1ps" << endl << endl;
     oFile << "module TopModule(";
+    string tempString = "";
     for(Variable var : allVariables) {
         if (var.getVarType().compare("input") == 0 || var.getVarType().compare("output") == 0) {
-            oFile << var.getName() << ", "; //FIXME: hanlde last comma
+            tempString += var.getName() + ", ";
         }
     }
-    oFile << ");" << endl;
+    tempString = tempString.substr(0, tempString.length() - 2);
+    oFile << tempString << ");" << endl;
     for(Variable var : allVariables) {
-        oFile << var.getVarType() << "[" << var.getBitWidth() << ":0] " << var.getName() << ";" << endl;
+        oFile << "   " << var.getVarType();
+        if (var.getVarType().compare("output") == 0)
+            oFile << " reg ";
+        oFile << "[" << var.getBitWidth() << ":0] " << var.getName() << ";" << endl;
     }
-    //FIXME: variable declaration
-    oFile << endl << "   always @(" << /*FIXME: inputs*/ ") begin" << endl;
+    oFile << endl << "   always @(";
+    tempString = "";
+    for (Variable var : allVariables) {
+        if (var.getVarType().compare("input") == 0)
+            tempString += var.getName() + ", ";
+    }
+    tempString = tempString.substr(0, tempString.length() - 2);
+    oFile << tempString << ") begin" << endl;
     oFile << modules;
     oFile << "   end" << endl << endl;
     oFile << "endModule" << endl << endl;
