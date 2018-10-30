@@ -9,18 +9,21 @@ private:
     std::string name;
     std::string vartype;
     int bitwidth;
+    bool unSigned;
     
 public:
 	Variable() { //default constructor
 		this->name = "undefined";
 		this->vartype = "undefined";
 		this->bitwidth = 0;
+        this->unSigned = false;
 	}
 
-	Variable(std::string name, std::string vartype, int bitwidth) {
+	Variable(std::string name, std::string vartype, int bitwidth, bool unSigned) {
 		this->name = name;
 		this->vartype = vartype;
 		this->bitwidth = bitwidth;
+        this->unSigned = unSigned;
 	}
     
 	//getters
@@ -33,6 +36,9 @@ public:
 	int getBitWidth() const {
 		return this->bitwidth;
 	}
+    bool getUnSigned() const {
+        return this->unSigned;
+    }
     
     //setters
 	void setName(std::string name) {
@@ -44,6 +50,9 @@ public:
 	void setBitWidth(int bitwidth) {
 		this->bitwidth = bitwidth;
 	}
+    void setUnSigned(bool unSigned) {
+        this->unSigned = unSigned;
+    }
 
 	void toString() {
 		std::cout << "Var Name: " << name << " Var type: " << vartype << " Bit Width: " << bitwidth << std::endl;

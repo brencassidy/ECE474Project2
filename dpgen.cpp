@@ -10,6 +10,7 @@ the top Module verilog file
 #include <fstream>
 #include <vector>
 #include <sstream>
+#include <algorithm>
 #include "Variable.hpp"
 
 using namespace std;
@@ -28,6 +29,7 @@ double critPathArray[12][6] = {
     {1.792, 2.218, 3.111, 3.471, 4.347, 6.200},
     {1.792, 2.218, 3.108, 3.701, 4.685, 6.503},
 };
+
 string callOperator(vector<Variable> variables, string operand, int num);
 double calcOperationTime(vector<Variable> variables, string operand);
 
@@ -44,7 +46,7 @@ int main(int argc, char *argv[]) {
 	//Step 1: Read file input line by line
 	ifstream iFile;
     ofstream oFile;
-	string line, operand, currType, bitWidth, varNames, currName;
+	string line, operand, currType, bitWidth, varNames, currName, currIntType;
 	string delimiter = ", ";
     string modules = "";
 
@@ -81,6 +83,8 @@ int main(int argc, char *argv[]) {
 
 				while ((pos = varNames.find(delimiter)) != string::npos) {
 					tempVar.setVarType(currType);
+                    if (bitWidth.compare("UInt"))
+                        tempVar.setUnSigned(true);
 					tempVar.setBitWidth(stoi(bitWidth.substr(begin, bitWidth.length() - 1)));
 
 					currName = varNames.substr(0, pos);
@@ -92,6 +96,8 @@ int main(int argc, char *argv[]) {
 
 				if (!varNames.empty()) {
 					tempVar.setVarType(currType);
+                    if (bitWidth.at(0) == 'U')
+                        tempVar.setUnSigned(true);
 					tempVar.setBitWidth(stoi(bitWidth.substr(begin, bitWidth.length() - 1)));
 					tempVar.setName(varNames);
 					allVariables.push_back(tempVar);
@@ -122,7 +128,7 @@ int main(int argc, char *argv[]) {
 						operand = val;
 					count += 1;
 				}
-				modules += "      " + callOperator(currOperand, operand, operandCount);
+				modules += "   " + callOperator(currOperand, operand, operandCount);
                 critPath+= calcOperationTime(currOperand, operand); //FIXME: not sure if crit path is some of all opeations or just longest op
 				operandCount += 1;
 			}
@@ -146,26 +152,20 @@ int main(int argc, char *argv[]) {
             tempString += var.getName() + ", ";
         }
     }
-    tempString = tempString.substr(0, tempString.length() - 2);
-    oFile << tempString << ");" << endl;
+    oFile << tempString << "Clk, Rst);" << endl;
+    oFile << "   input Clk, Rst;" << endl;
     for(Variable var : allVariables) {
         oFile << "   " << var.getVarType();
         if (var.getVarType().compare("output") == 0)
-            oFile << " reg ";
-        oFile << "[" << var.getBitWidth() << ":0] " << var.getName() << ";" << endl;
+            oFile << " reg";
+        if (var.getUnSigned() == true)
+            oFile << " signed";
+        oFile << " [" << var.getBitWidth() << ":0] " << var.getName() << ";" << endl;
     }
-    oFile << endl << "   always @(";
-    tempString = "";
-    for (Variable var : allVariables) {
-        if (var.getVarType().compare("input") == 0)
-            tempString += var.getName() + ", ";
-    }
-    tempString = tempString.substr(0, tempString.length() - 2);
-    oFile << tempString << ") begin" << endl;
-    oFile << modules;
-    oFile << "   end" << endl << endl;
+    oFile << endl << modules << endl;
     oFile << "endModule" << endl << endl;
     oFile << "//Critical Path : " << critPath << "ns" << endl;
+    oFile.close();
     
 	return 0;
 };
