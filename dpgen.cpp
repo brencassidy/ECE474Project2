@@ -158,7 +158,7 @@ int main(int argc, char *argv[]) {
         oFile << "   " << var.getVarType();
         if (var.getVarType().compare("output") == 0)
             oFile << " reg";
-        if (var.getUnSigned() == true)
+        if (var.getUnSigned() == false)
             oFile << " signed";
         oFile << " [" << var.getBitWidth() << ":0] " << var.getName() << ";" << endl;
     }
