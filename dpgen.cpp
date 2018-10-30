@@ -208,10 +208,10 @@ string callOperator(vector<Variable> variables, string operand, int num) {
     else if (operand.compare("%") == 0) {    //MOD
         toReturn = "MOD mod" + to_string(num) + "(" + variables.at(1).getName() + "," + variables.at(2).getName() + "," + variables.at(0).getName() + ");\n";
     }
-    else if (operand.compare("+") == 0) {    //INC
+    else if (operand.compare("+ 1") == 0) {    //INC UPDATE: needs to be tested
         toReturn = "INC inc" + to_string(num) + "(" + variables.at(1).getName() + "," + variables.at(0).getName() + ");\n";
     }
-    else if (operand.compare("-") == 0)    { //DEC
+    else if (operand.compare("- 1") == 0)    { //DEC UPDATE: needs to be tested
         toReturn = "DEC dec" + to_string(num) + "(" + variables.at(1).getName() + "," + variables.at(0).getName() + ");\n";
     }
     else {
@@ -241,8 +241,8 @@ double calcOperationTime(vector<Variable> variables, string operand) {
         else if (operand.compare("<<") == 0) operationIndex = 7;
         else if (operand.compare("/") == 0) operationIndex = 8;
         else if (operand.compare("%") == 0) operationIndex = 9;
-        //else if (operand.compare("") == 0) operationIndex = 10; //FIXME: change this to deal with INC
-        //else if (operand.compare("") == 0) operationIndex = 11; //FIXME: change this to deal with DEC
+        else if (operand.compare("+ 1") == 0) operationIndex = 10; //FIXME: change this to deal with INC UPDATE: needs to be tested
+        else if (operand.compare("- 1") == 0) operationIndex = 11; //FIXME: change this to deal with DEC UPDATE: needs to be tested
     } //FIXME handle register assignments
     else
         return 0;
