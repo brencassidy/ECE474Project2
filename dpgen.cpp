@@ -47,7 +47,7 @@ int main(int argc, char *argv[]) {
 	//Step 1: Read file input line by line
 	ifstream iFile;
 	ofstream oFile;
-	string line, operand, currType, bitWidth, varNames, currName, currIntType;
+	string line, operand, currType, bitWidth, varNames, currName;
 	string delimiter = ", ";
 	string modules = "";
 
@@ -138,14 +138,10 @@ int main(int argc, char *argv[]) {
 					modules += "   " + callSignedOperator(currOperand, operand, operandCount);
 				else
 					modules += "   " + callUnsignedOperator(currOperand, operand, operandCount);
-				critPath += calcOperationTime(currOperand, operand); //FIXME: not sure if crit path is some of all opeations or just longest op
+                if (critPath < calcOperationTime(currOperand, operand))
+                    critPath = calcOperationTime(currOperand, operand);
 				operandCount += 1;
 			}
-			//oFile.close();
-			/*for (auto i : allVariables) {
-			i.toString();
-			}*/
-			//Call Operand function
 		}
 	}
 	else {
@@ -173,9 +169,10 @@ int main(int argc, char *argv[]) {
 		oFile << " [" << var.getBitWidth()-1 << ":0] " << var.getName() << ";" << endl;
 	}
 	oFile << endl << modules << endl;
-	oFile << "endModule" << endl << endl;
-	oFile << "//Critical Path : " << critPath << "ns" << endl;
+	oFile << "endModule" << endl;
 	oFile.close();
+    
+    cout << "Critical Path : " << critPath << "ns" << endl;
 
 	return 0;
 };

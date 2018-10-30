@@ -10,6 +10,7 @@ private:
     std::string vartype;
     int bitwidth;
     bool unSigned;
+    std::vector<Variable> dependencies;
     
 public:
 	Variable() { //default constructor
@@ -39,6 +40,9 @@ public:
     bool getUnSigned() const {
         return this->unSigned;
     }
+    std::vector<Variable> getDependecies() const {
+        return this->dependencies;
+    }
     
     //setters
 	void setName(std::string name) {
@@ -52,6 +56,9 @@ public:
 	}
     void setUnSigned(bool unSigned) {
         this->unSigned = unSigned;
+    }
+    void setDependencies(std::vector<Variable> dependencies) {
+        this->dependencies = dependencies;
     }
 
 	void toString() {
