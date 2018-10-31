@@ -30,8 +30,8 @@ double critPathArray[12][6] = {
 	{ 1.792, 2.218, 3.108, 3.701, 4.685, 6.503 },
 };
 
-string callSignedOperator(vector<Variable> variables, string operand, int num);
-string callUnsignedOperator(vector<Variable> variables, string operand, int num);
+string callSignedOperator(vector<Variable> variables, string operand, int num, int datawidth);
+string callUnsignedOperator(vector<Variable> variables, string operand, int num, int datawidth);
 double calcOperationTime(vector<Variable> variables, string operand);
 
 int main(int argc, char *argv[]) {
@@ -41,7 +41,7 @@ int main(int argc, char *argv[]) {
 		return EXIT_FAILURE;
 	}
 
-	int i, pos, operandCount = 0, count = 0;
+	int i, maxDatawidth, pos, operandCount = 0, count = 0;
 	bool operation, signedFlag, validVar = false;
 
 	//Step 1: Read file input line by line
@@ -66,6 +66,7 @@ int main(int argc, char *argv[]) {
 		while (!iFile.eof()) {
 			string val;
 			count = 0;
+			maxDatawidth = 0;
 			operation = false;
 			signedFlag = true;
 			validVar = false;
@@ -129,6 +130,8 @@ int main(int argc, char *argv[]) {
 								//Default is signed, swap flag on unsigned
 								if (allVariables[i].getUnSigned() == true)
 									signedFlag = false;
+								if (maxDatawidth < allVariables[i].getBitWidth())
+									maxDatawidth = allVariables[i].getBitWidth();
 								validVar = true;
 								currOperand.push_back(allVariables[i]);
 								break;
@@ -152,9 +155,9 @@ int main(int argc, char *argv[]) {
 				}
 				//Differentiate between signed and unsigned
 				if(signedFlag == true)
-					modules += "   " + callSignedOperator(currOperand, operand, operandCount);
+					modules += "   " + callSignedOperator(currOperand, operand, operandCount, maxDatawidth);
 				else
-					modules += "   " + callUnsignedOperator(currOperand, operand, operandCount);
+					modules += "   " + callUnsignedOperator(currOperand, operand, operandCount, maxDatawidth);
                 if (critPath < calcOperationTime(currOperand, operand))
                     critPath = calcOperationTime(currOperand, operand);
 				operandCount += 1;
@@ -194,49 +197,49 @@ int main(int argc, char *argv[]) {
 	return 0;
 };
 
-string callSignedOperator(vector<Variable> variables, string operand, int num) {
+string callSignedOperator(vector<Variable> variables, string operand, int num, int datawidth) {
 	string toReturn;
 	if (operand.compare("=") == 0) {    //REG
-		toReturn = "SREG reg" + std::to_string(num) + "(" + variables.at(1).getName() + ", " + variables.at(0).getName() + ");\n";
+		toReturn = "SREG #(.DATAWIDTH(Int" + std::to_string(datawidth) + ")) reg" + std::to_string(num) + "(" + variables.at(1).getName() + ", " + variables.at(0).getName() + ");\n";
 	}
 	else if (operand.compare("+") == 0) { //ADD
-		toReturn = "SADD add" + std::to_string(num) + "(" + variables.at(1).getName() + ", " + variables.at(2).getName() + ", " + variables.at(0).getName() + ");\n";
+		toReturn = "SADD #(.DATAWIDTH(Int" + std::to_string(datawidth) + ")) add" + std::to_string(num) + "(" + variables.at(1).getName() + ", " + variables.at(2).getName() + ", " + variables.at(0).getName() + ");\n";
 	}
 	else if (operand.compare("-") == 0) {    //SUB
-		toReturn = "SSUB sub" + std::to_string(num) + "(" + variables.at(1).getName() + ", " + variables.at(2).getName() + ", " + variables.at(0).getName() + ");\n";
+		toReturn = "SSUB #(.DATAWIDTH(Int" + std::to_string(datawidth) + ")) sub" + std::to_string(num) + "(" + variables.at(1).getName() + ", " + variables.at(2).getName() + ", " + variables.at(0).getName() + ");\n";
 	}
 	else if (operand.compare("*") == 0) {    //MUL
-		toReturn = "SMUL mul" + std::to_string(num) + "(" + variables.at(1).getName() + ", " + variables.at(2).getName() + ", " + variables.at(0).getName() + ");\n";
+		toReturn = "SMUL #(.DATAWIDTH(Int" + std::to_string(datawidth) + ")) mul" + std::to_string(num) + "(" + variables.at(1).getName() + ", " + variables.at(2).getName() + ", " + variables.at(0).getName() + ");\n";
 	}
 	else if (operand.compare(">") == 0) {    //COMP (gt output)
-		toReturn = "SCOMP comp" + to_string(num) + "(" + variables.at(1).getName() + ", " + variables.at(2).getName() + ", " + variables.at(0).getName() + ", 0, 0);\n";
+		toReturn = "SCOMP #(.DATAWIDTH(Int" + std::to_string(datawidth) + ")) comp" + to_string(num) + "(" + variables.at(1).getName() + ", " + variables.at(2).getName() + ", " + variables.at(0).getName() + ", 0, 0);\n";
 	}
 	else if (operand.compare("<") == 0) {    //COMP (lt output)
-		toReturn = "SCOMP comp" + to_string(num) + "(" + variables.at(1).getName() + ", " + variables.at(2).getName() + ", 0, " + variables.at(0).getName() + ", 0);\n";
+		toReturn = "SCOMP #(.DATAWIDTH(Int" + std::to_string(datawidth) + ")) comp" + to_string(num) + "(" + variables.at(1).getName() + ", " + variables.at(2).getName() + ", 0, " + variables.at(0).getName() + ", 0);\n";
 	}
 	else if (operand.compare("==") == 0) {    //COMP (eq output)
-		toReturn = "SCOMP comp" + to_string(num) + "(" + variables.at(1).getName() + ", " + variables.at(2).getName() + ", 0, 0, " + variables.at(0).getName() + ");\n";
+		toReturn = "SCOMP #(.DATAWIDTH(Int" + std::to_string(datawidth) + ")) comp" + to_string(num) + "(" + variables.at(1).getName() + ", " + variables.at(2).getName() + ", 0, 0, " + variables.at(0).getName() + ");\n";
 	}
 	else if (operand.compare("?") == 0) {    //MUX2x1
-		toReturn = "SMUX2x1 mux" + to_string(num) + "(" + variables.at(2).getName() + ", " + variables.at(3).getName() + ", " + variables.at(1).getName() + ", " + variables.at(0).getName() + ");\n";
+		toReturn = "SMUX2x1 #(.DATAWIDTH(Int" + std::to_string(datawidth) + ")) mux" + to_string(num) + "(" + variables.at(2).getName() + ", " + variables.at(3).getName() + ", " + variables.at(1).getName() + ", " + variables.at(0).getName() + ");\n";
 	}
 	else if (operand.compare(">>") == 0) {    //SHR
-		toReturn = "SSHR shr" + to_string(num) + "(" + variables.at(1).getName() + ", " + variables.at(2).getName() + ", " + variables.at(0).getName() + ");\n";
+		toReturn = "SSHR #(.DATAWIDTH(Int" + std::to_string(datawidth) + ")) shr" + to_string(num) + "(" + variables.at(1).getName() + ", " + variables.at(2).getName() + ", " + variables.at(0).getName() + ");\n";
 	}
 	else if (operand.compare("<<") == 0) {    //SHL
-		toReturn = "SSHL shl" + to_string(num) + "(" + variables.at(1).getName() + ", " + variables.at(2).getName() + ", " + variables.at(0).getName() + ");\n";
+		toReturn = "SSHL #(.DATAWIDTH(Int" + std::to_string(datawidth) + ")) shl" + to_string(num) + "(" + variables.at(1).getName() + ", " + variables.at(2).getName() + ", " + variables.at(0).getName() + ");\n";
 	}
 	else if (operand.compare("/") == 0) {    //DIV
-		toReturn = "SDIV div" + to_string(num) + "(" + variables.at(1).getName() + ", " + variables.at(2).getName() + ", " + variables.at(0).getName() + ");\n";
+		toReturn = "SDIV #(.DATAWIDTH(Int" + std::to_string(datawidth) + ")) div" + to_string(num) + "(" + variables.at(1).getName() + ", " + variables.at(2).getName() + ", " + variables.at(0).getName() + ");\n";
 	}
 	else if (operand.compare("%") == 0) {    //MOD
-		toReturn = "SMOD mod" + to_string(num) + "(" + variables.at(1).getName() + ", " + variables.at(2).getName() + ", " + variables.at(0).getName() + ");\n";
+		toReturn = "SMOD #(.DATAWIDTH(Int" + std::to_string(datawidth) + ")) mod" + to_string(num) + "(" + variables.at(1).getName() + ", " + variables.at(2).getName() + ", " + variables.at(0).getName() + ");\n";
 	}
 	else if (operand.compare("+ 1") == 0) {    //INC UPDATE: needs to be tested
-		toReturn = "SINC inc" + to_string(num) + "(" + variables.at(1).getName() + ", " + variables.at(0).getName() + ");\n";
+		toReturn = "SINC #(.DATAWIDTH(Int" + std::to_string(datawidth) + ")) inc" + to_string(num) + "(" + variables.at(1).getName() + ", " + variables.at(0).getName() + ");\n";
 	}
 	else if (operand.compare("- 1") == 0) { //DEC UPDATE: needs to be tested
-		toReturn = "SDEC dec" + to_string(num) + "(" + variables.at(1).getName() + ", " + variables.at(0).getName() + ");\n";
+		toReturn = "SDEC#(.DATAWIDTH(Int" + std::to_string(datawidth) + "))  dec" + to_string(num) + "(" + variables.at(1).getName() + ", " + variables.at(0).getName() + ");\n";
 	}
 	else {
 		cout << "ERROR: Invalid Operator.";
@@ -245,49 +248,49 @@ string callSignedOperator(vector<Variable> variables, string operand, int num) {
 	return toReturn;
 
 }
-string callUnsignedOperator(vector<Variable> variables, string operand, int num) {
+string callUnsignedOperator(vector<Variable> variables, string operand, int num, int datawidth) {
 	string toReturn;
 	if (operand.compare("=") == 0) {    //REG
-		toReturn = "REG reg" + std::to_string(num) + "(" + variables.at(1).getName() + ", " + variables.at(0).getName() + ");\n";
+		toReturn = "REG #(.DATAWIDTH(Int" + std::to_string(datawidth) + ")) reg" + std::to_string(num) + "(" + variables.at(1).getName() + ", " + variables.at(0).getName() + ");\n";
 	}
 	else if (operand.compare("+") == 0) { //ADD
-		toReturn = "ADD add" + std::to_string(num) + "(" + variables.at(1).getName() + ", " + variables.at(2).getName() + ", " + variables.at(0).getName() + ");\n";
+		toReturn = "ADD #(.DATAWIDTH(Int" + std::to_string(datawidth) + ")) add" + std::to_string(num) + "(" + variables.at(1).getName() + ", " + variables.at(2).getName() + ", " + variables.at(0).getName() + ");\n";
 	}
 	else if (operand.compare("-") == 0) {    //SUB
-		toReturn = "SUB sub" + std::to_string(num) + "(" + variables.at(1).getName() + ", " + variables.at(2).getName() + ", " + variables.at(0).getName() + ");\n";
+		toReturn = "SUB #(.DATAWIDTH(Int" + std::to_string(datawidth) + ")) sub" + std::to_string(num) + "(" + variables.at(1).getName() + ", " + variables.at(2).getName() + ", " + variables.at(0).getName() + ");\n";
 	}
 	else if (operand.compare("*") == 0) {    //MUL
-		toReturn = "MUL mul" + std::to_string(num) + "(" + variables.at(1).getName() + ", " + variables.at(2).getName() + ", " + variables.at(0).getName() + ");\n";
+		toReturn = "MUL #(.DATAWIDTH(Int" + std::to_string(datawidth) + ")) mul" + std::to_string(num) + "(" + variables.at(1).getName() + ", " + variables.at(2).getName() + ", " + variables.at(0).getName() + ");\n";
 	}
 	else if (operand.compare(">") == 0) {    //COMP (gt output)
-		toReturn = "COMP comp" + to_string(num) + "(" + variables.at(1).getName() + ", " + variables.at(2).getName() + ", " + variables.at(0).getName() + ", 0, 0);\n";
+		toReturn = "COMP  #(.DATAWIDTH(Int" + std::to_string(datawidth) + ")) comp" + to_string(num) + "(" + variables.at(1).getName() + ", " + variables.at(2).getName() + ", " + variables.at(0).getName() + ", 0, 0);\n";
 	}
 	else if (operand.compare("<") == 0) {    //COMP (lt output)
-		toReturn = "COMP comp" + to_string(num) + "(" + variables.at(1).getName() + ", " + variables.at(2).getName() + ", 0, " + variables.at(0).getName() + ", 0);\n";
+		toReturn = "COMP #(.DATAWIDTH(Int" + std::to_string(datawidth) + ")) comp" + to_string(num) + "(" + variables.at(1).getName() + ", " + variables.at(2).getName() + ", 0, " + variables.at(0).getName() + ", 0);\n";
 	}
 	else if (operand.compare("==") == 0) {    //COMP (eq output)
-		toReturn = "COMP comp" + to_string(num) + "(" + variables.at(1).getName() + ", " + variables.at(2).getName() + ", 0, 0, " + variables.at(0).getName() + ");\n";
+		toReturn = "COMP #(.DATAWIDTH(Int" + std::to_string(datawidth) + ")) comp" + to_string(num) + "(" + variables.at(1).getName() + ", " + variables.at(2).getName() + ", 0, 0, " + variables.at(0).getName() + ");\n";
 	}
 	else if (operand.compare("?") == 0) {    //MUX2x1
-		toReturn = "MUX2x1 mux" + to_string(num) + "(" + variables.at(2).getName() + ", " + variables.at(3).getName() + ", " + variables.at(1).getName() + ", " + variables.at(0).getName() + ");\n";
+		toReturn = "MUX2x1 #(.DATAWIDTH(Int" + std::to_string(datawidth) + ")) mux" + to_string(num) + "(" + variables.at(2).getName() + ", " + variables.at(3).getName() + ", " + variables.at(1).getName() + ", " + variables.at(0).getName() + ");\n";
 	}
 	else if (operand.compare(">>") == 0) {    //SHR
-		toReturn = "SHR shr" + to_string(num) + "(" + variables.at(1).getName() + ", " + variables.at(2).getName() + ", " + variables.at(0).getName() + ");\n";
+		toReturn = "SHR #(.DATAWIDTH(Int" + std::to_string(datawidth) + ")) shr" + to_string(num) + "(" + variables.at(1).getName() + ", " + variables.at(2).getName() + ", " + variables.at(0).getName() + ");\n";
 	}
 	else if (operand.compare("<<") == 0) {    //SHL
-		toReturn = "SHL shl" + to_string(num) + "(" + variables.at(1).getName() + ", " + variables.at(2).getName() + ", " + variables.at(0).getName() + ");\n";
+		toReturn = "SHL #(.DATAWIDTH(Int" + std::to_string(datawidth) + ")) shl" + to_string(num) + "(" + variables.at(1).getName() + ", " + variables.at(2).getName() + ", " + variables.at(0).getName() + ");\n";
 	}
 	else if (operand.compare("/") == 0) {    //DIV
-		toReturn = "DIV div" + to_string(num) + "(" + variables.at(1).getName() + ", " + variables.at(2).getName() + ", " + variables.at(0).getName() + ");\n";
+		toReturn = "DIV#(.DATAWIDTH(Int" + std::to_string(datawidth) + "))  div" + to_string(num) + "(" + variables.at(1).getName() + ", " + variables.at(2).getName() + ", " + variables.at(0).getName() + ");\n";
 	}
 	else if (operand.compare("%") == 0) {    //MOD
-		toReturn = "MOD mod" + to_string(num) + "(" + variables.at(1).getName() + ", " + variables.at(2).getName() + ", " + variables.at(0).getName() + ");\n";
+		toReturn = "MOD #(.DATAWIDTH(Int" + std::to_string(datawidth) + ")) mod" + to_string(num) + "(" + variables.at(1).getName() + ", " + variables.at(2).getName() + ", " + variables.at(0).getName() + ");\n";
 	}
-	else if (operand.compare("++") == 0) {    //INC UPDATE: needs to be tested
-		toReturn = "INC inc" + to_string(num) + "(" + variables.at(1).getName() + ", " + variables.at(0).getName() + ");\n";
+	else if (operand.compare("+ 1") == 0) {    //INC UPDATE: needs to be tested
+		toReturn = "INC #(.DATAWIDTH(Int" + std::to_string(datawidth) + ")) inc" + to_string(num) + "(" + variables.at(1).getName() + ", " + variables.at(0).getName() + ");\n";
 	}
-	else if (operand.compare("--") == 0) { //DEC UPDATE: needs to be tested
-		toReturn = "DEC dec" + to_string(num) + "(" + variables.at(1).getName() + ", " + variables.at(0).getName() + ");\n";
+	else if (operand.compare("- 1") == 0) { //DEC UPDATE: needs to be tested
+		toReturn = "DEC #(.DATAWIDTH(Int" + std::to_string(datawidth) + ")) dec" + to_string(num) + "(" + variables.at(1).getName() + ", " + variables.at(0).getName() + ");\n";
 	}
 	else {
 		cout << "ERROR: Invalid Operator.";
