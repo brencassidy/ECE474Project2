@@ -107,6 +107,10 @@ int main(int argc, char *argv[]) {
 						tempVar.setUnSigned(true);
 					tempVar.setBitWidth(stoi(bitWidth.substr(begin, bitWidth.length() - 1)));
 					tempVar.setName(varNames);
+					for(int i = 0; i < tempVar.getName.length;i++){//new needs testing
+						if(isspace(tempVar.getName.at(i))){//
+							tempVar.setName(tempVar) = tempVar.getName.substr(begin,(i-1));
+					}//
 					allVariables.push_back(tempVar);
 				}
 			}
