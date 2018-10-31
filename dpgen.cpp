@@ -94,10 +94,11 @@ int main(int argc, char *argv[]) {
 					varNames.erase(0, pos + delimiter.length());
 					tempVar.setName(currName);
 					
-					for(int i = 0; i < tempVar.getName.length;i++){//new needs testing
-						if(isspace(tempVar.getName.at(i))){//
-							tempVar.setName(tempVar) = tempVar.getName.substr(begin,(i-1));
-					}//
+                    for(int i = 0; i < tempVar.getName().length(); i++){//new needs testing
+                        if(isspace(tempVar.getName().at(i)))
+                            tempVar.setName(tempVar.getName().substr(0,(i-1)));
+                    }
+
 
 					allVariables.push_back(tempVar);
 				}
@@ -108,10 +109,11 @@ int main(int argc, char *argv[]) {
 						tempVar.setUnSigned(true);
 					tempVar.setBitWidth(stoi(bitWidth.substr(begin, bitWidth.length() - 1)));
 					tempVar.setName(varNames);
-					for(int i = 0; i < tempVar.getName.length;i++){//new needs testing
-						if(isspace(tempVar.getName.at(i))){//
-							tempVar.setName(tempVar) = tempVar.getName.substr(begin,(i-1));
-					}//
+                    for(int i = 0; i < tempVar.getName().length(); i++){//new needs testing
+                        if(isspace(tempVar.getName().at(i)))
+                            tempVar.setName(tempVar.getName().substr(0,(i-1)));
+                    }
+
 					allVariables.push_back(tempVar);
 				}
 			}
@@ -138,13 +140,13 @@ int main(int argc, char *argv[]) {
 							}
 					
 						}
-						if (count == 4 && validVar ==false){//too account for inc or dec
-							if (val=='1'){//needs to be tested
-								validvar =true;//needs to be tested
-							}
-							else{//needs to be tested
-								validvar =false;//needs to be tested
-						}
+//                        if (count == 4 && validVar ==false){//too account for inc or dec
+//                            if (val=='1'){//needs to be tested
+//                                validvar =true;//needs to be tested
+//                            }
+//                            else{//needs to be tested
+//                                validvar =false;//needs to be tested
+//                        }
 						if (validVar == false)
 							return EXIT_FAILURE;
 					}
