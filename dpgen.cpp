@@ -42,7 +42,7 @@ int main(int argc, char *argv[]) {
 	}
 
 	int i, maxDatawidth, pos, operandCount = 0, count = 0;
-	bool operation, signedFlag, validVar = false;
+	bool operation, signedFlag, flagIncDec, validVar = false;
 
 	//Step 1: Read file input line by line
 	ifstream iFile;
@@ -69,6 +69,7 @@ int main(int argc, char *argv[]) {
 			maxDatawidth = 0;
 			operation = false;
 			signedFlag = true;
+			flagIncDec = false;
 			validVar = false;
 			currOperand.clear();
 			operand = "="; //Assume Reg
@@ -144,13 +145,11 @@ int main(int argc, char *argv[]) {
 							}
 					
 						}
-//                        if (count == 4 && validVar ==false){//too account for inc or dec
-//                            if (val=='1'){//needs to be tested
-//                                validvar =true;//needs to be tested
-//                            }
-//                            else{//needs to be tested
-//                                validvar =false;//needs to be tested
-//                        }
+						//Specifically in case we come across a "+ 1" or "- 1"
+						if (count == 4 && val.compare("1") == 0) {
+							validVar = true;
+							flagIncDec = true;
+						}
 						if (validVar == false)
 							return EXIT_FAILURE;
 					}
@@ -158,6 +157,13 @@ int main(int argc, char *argv[]) {
 					if (count == 1 || count == 3)
 						operand = val;
 					count += 1;
+				}
+				//Check if we need special operand for Inc and Dec
+				if (flagIncDec == true) {
+					if (operand.compare("+") == 0)
+						operand = "++";
+					else
+						operand = "--";
 				}
 				//Differentiate between signed and unsigned
 				if(signedFlag == true)
@@ -241,11 +247,11 @@ string callSignedOperator(vector<Variable> variables, string operand, int num, i
 	else if (operand.compare("%") == 0) {    //MOD
 		toReturn = "SMOD #(.DATAWIDTH(Int" + std::to_string(datawidth) + ")) mod" + to_string(num) + "(" + variables.at(1).getName() + ", " + variables.at(2).getName() + ", " + variables.at(0).getName() + ");\n";
 	}
-	else if (operand.compare("+ 1") == 0) {    //INC UPDATE: needs to be tested
+	else if (operand.compare("++") == 0) {    //INC
 		toReturn = "SINC #(.DATAWIDTH(Int" + std::to_string(datawidth) + ")) inc" + to_string(num) + "(" + variables.at(1).getName() + ", " + variables.at(0).getName() + ");\n";
 	}
-	else if (operand.compare("- 1") == 0) { //DEC UPDATE: needs to be tested
-		toReturn = "SDEC#(.DATAWIDTH(Int" + std::to_string(datawidth) + "))  dec" + to_string(num) + "(" + variables.at(1).getName() + ", " + variables.at(0).getName() + ");\n";
+	else if (operand.compare("--") == 0) { //DEC 
+		toReturn = "SDEC #(.DATAWIDTH(Int" + std::to_string(datawidth) + ")) dec" + to_string(num) + "(" + variables.at(1).getName() + ", " + variables.at(0).getName() + ");\n";
 	}
 	else {
 		cout << "ERROR: Invalid Operator.";
@@ -292,10 +298,10 @@ string callUnsignedOperator(vector<Variable> variables, string operand, int num,
 	else if (operand.compare("%") == 0) {    //MOD
 		toReturn = "MOD #(.DATAWIDTH(Int" + std::to_string(datawidth) + ")) mod" + to_string(num) + "(" + variables.at(1).getName() + ", " + variables.at(2).getName() + ", " + variables.at(0).getName() + ");\n";
 	}
-	else if (operand.compare("+ 1") == 0) {    //INC UPDATE: needs to be tested
+	else if (operand.compare("++") == 0) {    //INC UPDATE: needs to be tested
 		toReturn = "INC #(.DATAWIDTH(Int" + std::to_string(datawidth) + ")) inc" + to_string(num) + "(" + variables.at(1).getName() + ", " + variables.at(0).getName() + ");\n";
 	}
-	else if (operand.compare("- 1") == 0) { //DEC UPDATE: needs to be tested
+	else if (operand.compare("--") == 0) { //DEC UPDATE: needs to be tested
 		toReturn = "DEC #(.DATAWIDTH(Int" + std::to_string(datawidth) + ")) dec" + to_string(num) + "(" + variables.at(1).getName() + ", " + variables.at(0).getName() + ");\n";
 	}
 	else {
@@ -326,8 +332,8 @@ double calcOperationTime(vector<Variable> variables, string operand) {
 		else if (operand.compare("<<") == 0) operationIndex = 7;
 		else if (operand.compare("/") == 0) operationIndex = 8;
 		else if (operand.compare("%") == 0) operationIndex = 9;
-		else if (operand.compare("+ 1") == 0) operationIndex = 10; //FIXME: change this to deal with INC UPDATE: needs to be tested
-		else if (operand.compare("- 1") == 0) operationIndex = 11; //FIXME: change this to deal with DEC UPDATE: needs to be tested
+		else if (operand.compare("++") == 0) operationIndex = 10;
+		else if (operand.compare("--") == 0) operationIndex = 11; 
 	} //FIXME handle register assignments
 	else
 		return 0;
