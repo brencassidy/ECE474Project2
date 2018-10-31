@@ -124,6 +124,14 @@ int main(int argc, char *argv[]) {
 								currOperand.push_back(allVariables[i]);
 								break;
 							}
+					
+						}
+						if (count == 4 && validVar ==false){//too account for inc or dec
+							if (val==1){//needs to be tested
+								validvar =true;//needs to be tested
+							}
+							else{//needs to be tested
+								validvar =false;//needs to be tested
 						}
 						if (validVar == false)
 							return EXIT_FAILURE;
