@@ -136,7 +136,7 @@ int main(int argc, char *argv[]) {
 					
 						}
 						if (count == 4 && validVar ==false){//too account for inc or dec
-							if (val==1){//needs to be tested
+							if (val=='1'){//needs to be tested
 								validvar =true;//needs to be tested
 							}
 							else{//needs to be tested
@@ -283,10 +283,10 @@ string callUnsignedOperator(vector<Variable> variables, string operand, int num)
 	else if (operand.compare("%") == 0) {    //MOD
 		toReturn = "MOD mod" + to_string(num) + "(" + variables.at(1).getName() + ", " + variables.at(2).getName() + ", " + variables.at(0).getName() + ");\n";
 	}
-	else if (operand.compare("+ 1") == 0) {    //INC UPDATE: needs to be tested
+	else if (operand.compare("++") == 0) {    //INC UPDATE: needs to be tested
 		toReturn = "INC inc" + to_string(num) + "(" + variables.at(1).getName() + ", " + variables.at(0).getName() + ");\n";
 	}
-	else if (operand.compare("- 1") == 0) { //DEC UPDATE: needs to be tested
+	else if (operand.compare("--") == 0) { //DEC UPDATE: needs to be tested
 		toReturn = "DEC dec" + to_string(num) + "(" + variables.at(1).getName() + ", " + variables.at(0).getName() + ");\n";
 	}
 	else {
