@@ -92,6 +92,11 @@ int main(int argc, char *argv[]) {
 					currName = varNames.substr(0, pos);
 					varNames.erase(0, pos + delimiter.length());
 					tempVar.setName(currName);
+					
+					for(int i = 0; i < tempVar.getName.length;i++){//new needs testing
+						if(isspace(tempVar.getName.at(i))){//
+							tempVar.setName(tempVar) = tempVar.getName.substr(begin,(i-1));
+					}//
 
 					allVariables.push_back(tempVar);
 				}
