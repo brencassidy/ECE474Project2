@@ -95,10 +95,11 @@ int main(int argc, char *argv[]) {
 					tempVar.setName(currName);
 					
                     for(int i = 0; i < tempVar.getName().length(); i++){//new needs testing
-                        if(isspace(tempVar.getName().at(i)))
-                            tempVar.setName(tempVar.getName().substr(0,(i-1)));
+                        if(isspace(tempVar.getName().at(i))) {
+                            if(!isspace(tempVar.getName().at(i-1)))
+                                tempVar.setName(tempVar.getName().substr(0,(i)));
+                        }
                     }
-
 
 					allVariables.push_back(tempVar);
 				}
@@ -110,8 +111,11 @@ int main(int argc, char *argv[]) {
 					tempVar.setBitWidth(stoi(bitWidth.substr(begin, bitWidth.length() - 1)));
 					tempVar.setName(varNames);
                     for(int i = 0; i < tempVar.getName().length(); i++){//new needs testing
-                        if(isspace(tempVar.getName().at(i)))
-                            tempVar.setName(tempVar.getName().substr(0,(i-1)));
+                        if(isspace(tempVar.getName().at(i))) {
+                            if(!isspace(tempVar.getName().at(i-1)))
+                                string temp = tempVar.getName().substr(0, i);
+                                tempVar.setName(tempVar.getName().substr(0, i));
+                        }
                     }
 
 					allVariables.push_back(tempVar);
