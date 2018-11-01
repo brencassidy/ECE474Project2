@@ -174,8 +174,10 @@ int main(int argc, char *argv[]) {
 							validVar = true;
 							flagIncDec = true;
 						}
-						if (validVar == false)
+                        if (validVar == false) {
+                            cout << "ERROR" << endl;
 							return EXIT_FAILURE;
+                        }
 					}
 					//Get the operand (= for reg, +,-... for others)
 					if (count == 1 || count == 3)
@@ -194,13 +196,15 @@ int main(int argc, char *argv[]) {
 					modules += "   " + callSignedOperator(currOperand, operand, operandCount, maxDatawidth, flagExtendLoc);
 				else
 					modules += "   " + callUnsignedOperator(currOperand, operand, operandCount, maxDatawidth, flagExtendLoc);
-                if (critPath < calcOperationTime(currOperand, operand))
-                    critPath = calcOperationTime(currOperand, operand);
+                double tempCrit = calcOperationTime(currOperand, operand);
+                if (critPath < tempCrit)
+                    critPath = tempCrit;
 				operandCount += 1;
 			}
 		}
 	}
 	else {
+        cout << "ERROR" << endl;
 		return -1;
 	}
 	//writing to output file
@@ -465,13 +469,23 @@ double calcOperationTime(vector<Variable> variables, string operand) {
 	int maxBitWidth;
 	int operationIndex;
 	int operandCount = variables.size();
+    int bitwidthIndex = 0;
+    int maxDepenWidth = 0;
+    int depenBitwidthIndex = 0;
 	if (operandCount == 3)
 		maxBitWidth = std::max(std::max(variables.at(0).getBitWidth(), variables.at(1).getBitWidth()), variables.at(2).getBitWidth());
 	else
 		maxBitWidth = std::max(variables.at(0).getBitWidth(), variables.at(1).getBitWidth());
 
+    if (maxBitWidth == 1) bitwidthIndex = 0;
+    else if (maxBitWidth == 2) bitwidthIndex = 1;
+    else if (maxBitWidth == 8) bitwidthIndex = 2;
+    else if (maxBitWidth == 16) bitwidthIndex = 3;
+    else if (maxBitWidth == 32) bitwidthIndex = 4;
+    else if (maxBitWidth == 64) bitwidthIndex = 5;
+    
 	//mapping of operand to operation
-	if (operand.compare("=") != 0) { //temporary fix until register assingment is handled
+	if (operand.compare("=") != 0) {
 		if (operand.compare("+") == 0) operationIndex = 1;
 		else if (operand.compare("-") == 0) operationIndex = 2;
 		else if (operand.compare("*") == 0) operationIndex = 3;
@@ -483,11 +497,23 @@ double calcOperationTime(vector<Variable> variables, string operand) {
 		else if (operand.compare("%") == 0) operationIndex = 9;
 		else if (operand.compare("++") == 0) operationIndex = 10;
 		else if (operand.compare("--") == 0) operationIndex = 11; 
-	} //FIXME handle register assignments
+	}
 	else
 		return 0;
-
-	double critPath = critPathArray[operationIndex][maxBitWidth] + critPathArray[0][maxBitWidth]; //sum of operation mapped to array above plus register assignment for maxBitWidth
+    
+    if (variables.at(0).getDependecies().size() == 2) {
+        maxDepenWidth = max(variables.at(0).getDependecies().at(0).getBitWidth(), variables.at(0).getDependecies().at(1).getBitWidth());
+    }
+    else maxDepenWidth = variables.at(0).getDependecies().at(0).getBitWidth();
+    
+    if (maxDepenWidth == 1) depenBitwidthIndex = 0;
+    else if (maxDepenWidth == 2) depenBitwidthIndex = 1;
+    else if (maxDepenWidth == 8) depenBitwidthIndex = 2;
+    else if (maxDepenWidth == 16) depenBitwidthIndex = 3;
+    else if (maxDepenWidth == 32) depenBitwidthIndex = 4;
+    else if (maxDepenWidth == 64) depenBitwidthIndex = 5;
+    
+	double critPath = critPathArray[0][depenBitwidthIndex] + critPathArray[operationIndex][bitwidthIndex] + critPathArray[0][bitwidthIndex]; //register assignment for previous operation + current operation time + register assignment for maxbitwidth
 
 	return critPath;
 }
