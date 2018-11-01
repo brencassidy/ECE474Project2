@@ -76,7 +76,7 @@ int main(int argc, char *argv[]) {
 
 			getline(iFile, line); //Pull in line
 
-								  //Decompisition of Input, Output, Wire
+			//Decompisition of Input, Output, Wire
 			if (line.find("=") == string::npos && !line.empty()) {
 				istringstream lineStream(line);
 				lineStream >> currType >> bitWidth;
@@ -124,9 +124,26 @@ int main(int argc, char *argv[]) {
 			}
 			else {
 				istringstream opStream(line);
+				istringstream tempStream(line);
 				if (line.compare("") == 0) {
 					continue;
 				}
+
+				//determining dependencies
+				string var1, var2, operand;
+				tempStream >> var1;
+				while(tempStream >> operand >> var2) {
+					for(unsigned int i = 0; i < allVariables.size(); i++) {
+						if(allVariables.at(i).getName().compare(var2) == 0) {
+							for(unsigned int j = 0; j < allVariables.size(); j++) {
+								if(allVariables.at(j).getName().compare(var1) == 0) {
+									allVariables.at(j).addToDependencies(allVariables.at(i));
+								}
+							}
+						}
+					}
+				}
+
 				//Decompisition of Operator
 				while (opStream >> val) {
 					//Check the variables validity
@@ -181,7 +198,6 @@ int main(int argc, char *argv[]) {
 	}
 	//writing to output file
 	oFile.open(argv[2]);
-	//oFile.open("C:\\Users\\cassi\\Documents\\School\\UofA7th Sem\\ECE 474\\ECEProject2\\ECEProject2\\474a_circuit1Out.txt");
 	oFile << "'timescale 1ns / 1ps" << endl << endl;
 	oFile << "module TopModule(";
 	string tempString = "";

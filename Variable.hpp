@@ -57,9 +57,9 @@ public:
     void setUnSigned(bool unSigned) {
         this->unSigned = unSigned;
     }
-    void setDependencies(std::vector<Variable> dependencies) {
-        this->dependencies = dependencies;
-    }
+	void addToDependencies(Variable var) {
+		this->dependencies.push_back(var);
+	}
 
 	void toString() {
 		std::cout << "Var Name: " << name << " Var type: " << vartype << " Bit Width: " << bitwidth << std::endl;
