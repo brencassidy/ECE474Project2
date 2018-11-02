@@ -154,7 +154,7 @@ int main(int argc, char *argv[]) {
                             validVar = false; //reset validVar flag after each iteration otherwise one valid var will make whole circuit "valid"
 							if (allVariables.at(i).getName().compare(val) == 0) {
 								//Default is signed, swap flag on unsigned
-								if (allVariables[i].getUnSigned() == true)
+								if (allVariables[i].getUnSigned() == false)
 									signedFlag = false;
 								if (maxDatawidth < allVariables[i].getBitWidth())
 									maxDatawidth = allVariables[i].getBitWidth();
@@ -193,7 +193,7 @@ int main(int argc, char *argv[]) {
 						operand = "--";
 				}
 				//Differentiate between signed and unsigned
-				if(signedFlag == true)
+				if(signedFlag == false)
 					modules += "   " + callSignedOperator(currOperand, operand, operandCount, maxDatawidth, flagExtendLoc);
 				else
 					modules += "   " + callUnsignedOperator(currOperand, operand, operandCount, maxDatawidth, flagExtendLoc);
