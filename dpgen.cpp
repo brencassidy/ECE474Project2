@@ -246,71 +246,71 @@ string callSignedOperator(vector<Variable> variables, string operand, int num, i
 		if(flagSignedExtend == 0)	//Do not add $signed
 			toReturn = "SADD #(.DATAWIDTH(Int" + std::to_string(datawidth) + ")) add" + std::to_string(num) + "(" + variables.at(1).getName() + ", " + variables.at(2).getName() + ", " + variables.at(0).getName() + ");\n";
 		else if(flagSignedExtend == 1) //Add $signed to var(1)
-			toReturn = "SADD #(.DATAWIDTH(Int" + std::to_string(datawidth) + ")) add" + std::to_string(num) + "($signed({1'b0," + variables.at(1).getName() + "}), " + variables.at(2).getName() + ", " + variables.at(0).getName() + ");\n";
+			toReturn = "SADD #(.DATAWIDTH(Int" + std::to_string(datawidth) + ")) add" + std::to_string(num) + "($signed({1'b1," + variables.at(1).getName() + "}), " + variables.at(2).getName() + ", " + variables.at(0).getName() + ");\n";
 		else if(flagSignedExtend == 2)//Add $signed to var(2)
-			toReturn = "SADD #(.DATAWIDTH(Int" + std::to_string(datawidth) + ")) add" + std::to_string(num) + "(" + variables.at(1).getName() + ", $signed({1'b0," + variables.at(2).getName() + "}), " + variables.at(0).getName() + ");\n";
+			toReturn = "SADD #(.DATAWIDTH(Int" + std::to_string(datawidth) + ")) add" + std::to_string(num) + "(" + variables.at(1).getName() + ", $signed({1'b1," + variables.at(2).getName() + "}), " + variables.at(0).getName() + ");\n";
 		else //Both need extension
-			toReturn = "SADD #(.DATAWIDTH(Int" + std::to_string(datawidth) + ")) add" + std::to_string(num) + "($signed({1'b0," + variables.at(1).getName() + "}), $signed({1'b0," + variables.at(2).getName() + "}), " + variables.at(0).getName() + ");\n";
+			toReturn = "SADD #(.DATAWIDTH(Int" + std::to_string(datawidth) + ")) add" + std::to_string(num) + "($signed({1'b1," + variables.at(1).getName() + "}), $signed({1'b1," + variables.at(2).getName() + "}), " + variables.at(0).getName() + ");\n";
 	}
 	else if (operand.compare("-") == 0) {    //SUB
 		if (flagSignedExtend == 0)
 			toReturn = "SSUB #(.DATAWIDTH(Int" + std::to_string(datawidth) + ")) sub" + std::to_string(num) + "(" + variables.at(1).getName() + ", " + variables.at(2).getName() + ", " + variables.at(0).getName() + ");\n";
 		else if (flagSignedExtend == 1)
-			toReturn = "SSUB #(.DATAWIDTH(Int" + std::to_string(datawidth) + ")) sub" + std::to_string(num) + "($signed({1'b0," + variables.at(1).getName() + "}), " + variables.at(2).getName() + ", " + variables.at(0).getName() + ");\n";
+			toReturn = "SSUB #(.DATAWIDTH(Int" + std::to_string(datawidth) + ")) sub" + std::to_string(num) + "($signed({1'b1," + variables.at(1).getName() + "}), " + variables.at(2).getName() + ", " + variables.at(0).getName() + ");\n";
 		else if (flagSignedExtend == 2)
-			toReturn = "SSUB #(.DATAWIDTH(Int" + std::to_string(datawidth) + ")) sub" + std::to_string(num) + "(" + variables.at(1).getName() + ", $signed({1'b0," + variables.at(2).getName() + "}), " + variables.at(0).getName() + ");\n";
+			toReturn = "SSUB #(.DATAWIDTH(Int" + std::to_string(datawidth) + ")) sub" + std::to_string(num) + "(" + variables.at(1).getName() + ", $signed({1'b1," + variables.at(2).getName() + "}), " + variables.at(0).getName() + ");\n";
 		else
-			toReturn = "SSUB #(.DATAWIDTH(Int" + std::to_string(datawidth) + ")) sub" + std::to_string(num) + "($signed({1'b0," + variables.at(1).getName() + "}), $signed({1'b0," + variables.at(2).getName() + "}), " + variables.at(0).getName() + ");\n";
+			toReturn = "SSUB #(.DATAWIDTH(Int" + std::to_string(datawidth) + ")) sub" + std::to_string(num) + "($signed({1'b1," + variables.at(1).getName() + "}), $signed({1'b1," + variables.at(2).getName() + "}), " + variables.at(0).getName() + ");\n";
 	}
 	else if (operand.compare("*") == 0) {    //MUL
 		if (flagSignedExtend == 0)
 			toReturn = "SMUL #(.DATAWIDTH(Int" + std::to_string(datawidth) + ")) mul" + std::to_string(num) + "(" + variables.at(1).getName() + ", " + variables.at(2).getName() + ", " + variables.at(0).getName() + ");\n";
 		else if (flagSignedExtend == 1)
-			toReturn = "SMUL #(.DATAWIDTH(Int" + std::to_string(datawidth) + ")) mul" + std::to_string(num) + "($signed({1'b0" + variables.at(1).getName() + "}), " + variables.at(2).getName() + ", " + variables.at(0).getName() + ");\n";
+			toReturn = "SMUL #(.DATAWIDTH(Int" + std::to_string(datawidth) + ")) mul" + std::to_string(num) + "($signed({1'b1" + variables.at(1).getName() + "}), " + variables.at(2).getName() + ", " + variables.at(0).getName() + ");\n";
 		else if (flagSignedExtend == 2)
-			toReturn = "SMUL #(.DATAWIDTH(Int" + std::to_string(datawidth) + ")) mul" + std::to_string(num) + "(" + variables.at(1).getName() + ", $signed({1'b0" + variables.at(2).getName() + "}), " + variables.at(0).getName() + ");\n";
+			toReturn = "SMUL #(.DATAWIDTH(Int" + std::to_string(datawidth) + ")) mul" + std::to_string(num) + "(" + variables.at(1).getName() + ", $signed({1'b1" + variables.at(2).getName() + "}), " + variables.at(0).getName() + ");\n";
 		else
-			toReturn = "SMUL #(.DATAWIDTH(Int" + std::to_string(datawidth) + ")) mul" + std::to_string(num) + "($signed({1'b0" + variables.at(1).getName() + "}), $signed({1'b0" + variables.at(2).getName() + "}), " + variables.at(0).getName() + ");\n";
+			toReturn = "SMUL #(.DATAWIDTH(Int" + std::to_string(datawidth) + ")) mul" + std::to_string(num) + "($signed({1'b1" + variables.at(1).getName() + "}), $signed({1'b1" + variables.at(2).getName() + "}), " + variables.at(0).getName() + ");\n";
 	}
 	else if (operand.compare(">") == 0) {    //COMP (gt output)
 		if (flagSignedExtend == 0)
 			toReturn = "SCOMP  #(.DATAWIDTH(Int" + std::to_string(datawidth) + ")) comp" + to_string(num) + "(" + variables.at(1).getName() + ", " + variables.at(2).getName() + ", " + variables.at(0).getName() + ", 0, 0);\n";
 		else if (flagSignedExtend == 1)
-			toReturn = "SCOMP  #(.DATAWIDTH(Int" + std::to_string(datawidth) + ")) comp" + to_string(num) + "($signed({1'b0," + variables.at(1).getName() + "}), " + variables.at(2).getName() + ", " + variables.at(0).getName() + ", 0, 0);\n";
+			toReturn = "SCOMP  #(.DATAWIDTH(Int" + std::to_string(datawidth) + ")) comp" + to_string(num) + "($signed({1'b1," + variables.at(1).getName() + "}), " + variables.at(2).getName() + ", " + variables.at(0).getName() + ", 0, 0);\n";
 		else if (flagSignedExtend == 2)
-			toReturn = "SCOMP  #(.DATAWIDTH(Int" + std::to_string(datawidth) + ")) comp" + to_string(num) + "(" + variables.at(1).getName() + ", $signed({1'b0," + variables.at(2).getName() + "}), " + variables.at(0).getName() + ", 0, 0);\n";
+			toReturn = "SCOMP  #(.DATAWIDTH(Int" + std::to_string(datawidth) + ")) comp" + to_string(num) + "(" + variables.at(1).getName() + ", $signed({1'b1," + variables.at(2).getName() + "}), " + variables.at(0).getName() + ", 0, 0);\n";
 		else
-			toReturn = "SCOMP  #(.DATAWIDTH(Int" + std::to_string(datawidth) + ")) comp" + to_string(num) + "($signed({1'b0," + variables.at(1).getName() + "}), $signed({1'b0," + variables.at(2).getName() + "}), " + variables.at(0).getName() + ", 0, 0);\n";
+			toReturn = "SCOMP  #(.DATAWIDTH(Int" + std::to_string(datawidth) + ")) comp" + to_string(num) + "($signed({1'b1," + variables.at(1).getName() + "}), $signed({1'b1," + variables.at(2).getName() + "}), " + variables.at(0).getName() + ", 0, 0);\n";
 	}
 	else if (operand.compare("<") == 0) {    //COMP (lt output)
 		if (flagSignedExtend == 0)
 			toReturn = "SCOMP #(.DATAWIDTH(Int" + std::to_string(datawidth) + ")) comp" + to_string(num) + "(" + variables.at(1).getName() + ", " + variables.at(2).getName() + ", 0, " + variables.at(0).getName() + ", 0);\n";
 		else if (flagSignedExtend == 1)
-			toReturn = "SCOMP #(.DATAWIDTH(Int" + std::to_string(datawidth) + ")) comp" + to_string(num) + "($signed({1'b0," + variables.at(1).getName() + "}), " + variables.at(2).getName() + ", 0, " + variables.at(0).getName() + ", 0);\n";
+			toReturn = "SCOMP #(.DATAWIDTH(Int" + std::to_string(datawidth) + ")) comp" + to_string(num) + "($signed({1'b1," + variables.at(1).getName() + "}), " + variables.at(2).getName() + ", 0, " + variables.at(0).getName() + ", 0);\n";
 		else if (flagSignedExtend == 2)
-			toReturn = "SCOMP #(.DATAWIDTH(Int" + std::to_string(datawidth) + ")) comp" + to_string(num) + "(" + variables.at(1).getName() + ", $signed({1'b0," + variables.at(2).getName() + "}), 0, " + variables.at(0).getName() + ", 0);\n";
+			toReturn = "SCOMP #(.DATAWIDTH(Int" + std::to_string(datawidth) + ")) comp" + to_string(num) + "(" + variables.at(1).getName() + ", $signed({1'b1," + variables.at(2).getName() + "}), 0, " + variables.at(0).getName() + ", 0);\n";
 		else
-			toReturn = "SCOMP #(.DATAWIDTH(Int" + std::to_string(datawidth) + ")) comp" + to_string(num) + "($signed({1'b0," + variables.at(1).getName() + "}), $signed({1'b0," + variables.at(2).getName() + "}), 0, " + variables.at(0).getName() + ", 0);\n";
+			toReturn = "SCOMP #(.DATAWIDTH(Int" + std::to_string(datawidth) + ")) comp" + to_string(num) + "($signed({1'b1," + variables.at(1).getName() + "}), $signed({1'b1," + variables.at(2).getName() + "}), 0, " + variables.at(0).getName() + ", 0);\n";
 	}
 	else if (operand.compare("==") == 0) {    //COMP (eq output)
 		if (flagSignedExtend == 0)
 			toReturn = "SCOMP #(.DATAWIDTH(Int" + std::to_string(datawidth) + ")) comp" + to_string(num) + "(" + variables.at(1).getName() + ", " + variables.at(2).getName() + ", 0, 0, " + variables.at(0).getName() + ");\n";
 		else if (flagSignedExtend == 1)
-			toReturn = "SCOMP #(.DATAWIDTH(Int" + std::to_string(datawidth) + ")) comp" + to_string(num) + "($signed({1'b0," + variables.at(1).getName() + "}), " + variables.at(2).getName() + ", 0, 0, " + variables.at(0).getName() + ");\n";
+			toReturn = "SCOMP #(.DATAWIDTH(Int" + std::to_string(datawidth) + ")) comp" + to_string(num) + "($signed({1'b1," + variables.at(1).getName() + "}), " + variables.at(2).getName() + ", 0, 0, " + variables.at(0).getName() + ");\n";
 		else if (flagSignedExtend == 2)
-			toReturn = "SCOMP #(.DATAWIDTH(Int" + std::to_string(datawidth) + ")) comp" + to_string(num) + "(" + variables.at(1).getName() + ", $signed({1'b0," + variables.at(2).getName() + "}), 0, 0, " + variables.at(0).getName() + ");\n";
+			toReturn = "SCOMP #(.DATAWIDTH(Int" + std::to_string(datawidth) + ")) comp" + to_string(num) + "(" + variables.at(1).getName() + ", $signed({1'b1," + variables.at(2).getName() + "}), 0, 0, " + variables.at(0).getName() + ");\n";
 		else
-			toReturn = "SCOMP #(.DATAWIDTH(Int" + std::to_string(datawidth) + ")) comp" + to_string(num) + "($signed({1'b0," + variables.at(1).getName() + "}), $signed({1'b0," + variables.at(2).getName() + "}), 0, 0, " + variables.at(0).getName() + ");\n";
+			toReturn = "SCOMP #(.DATAWIDTH(Int" + std::to_string(datawidth) + ")) comp" + to_string(num) + "($signed({1'b1," + variables.at(1).getName() + "}), $signed({1'b1," + variables.at(2).getName() + "}), 0, 0, " + variables.at(0).getName() + ");\n";
 	}
 	else if (operand.compare("?") == 0) {    //MUX2x1
 		if (flagSignedExtend == 0)
 			toReturn = "SMUX2x1 #(.DATAWIDTH(Int" + std::to_string(datawidth) + ")) mux" + to_string(num) + "(" + variables.at(2).getName() + ", " + variables.at(3).getName() + ", " + variables.at(1).getName() + ", " + variables.at(0).getName() + ");\n";
 		else if (flagSignedExtend == 1)
-			toReturn = "SMUX2x1 #(.DATAWIDTH(Int" + std::to_string(datawidth) + ")) mux" + to_string(num) + "($signed({1'b0," + variables.at(2).getName() + "}), " + variables.at(3).getName() + ", " + variables.at(1).getName() + ", " + variables.at(0).getName() + ");\n";
+			toReturn = "SMUX2x1 #(.DATAWIDTH(Int" + std::to_string(datawidth) + ")) mux" + to_string(num) + "($signed({1'b1," + variables.at(2).getName() + "}), " + variables.at(3).getName() + ", " + variables.at(1).getName() + ", " + variables.at(0).getName() + ");\n";
 		else if (flagSignedExtend == 2)
-			toReturn = "SMUX2x1 #(.DATAWIDTH(Int" + std::to_string(datawidth) + ")) mux" + to_string(num) + "(" + variables.at(2).getName() + ", $signed({1'b0," + variables.at(3).getName() + "}), " + variables.at(1).getName() + ", " + variables.at(0).getName() + ");\n";
+			toReturn = "SMUX2x1 #(.DATAWIDTH(Int" + std::to_string(datawidth) + ")) mux" + to_string(num) + "(" + variables.at(2).getName() + ", $signed({1'b1," + variables.at(3).getName() + "}), " + variables.at(1).getName() + ", " + variables.at(0).getName() + ");\n";
 		else
-			toReturn = "SMUX2x1 #(.DATAWIDTH(Int" + std::to_string(datawidth) + ")) mux" + to_string(num) + "($signed({1'b0," + variables.at(2).getName() + "}), $signed({1'b0," + variables.at(3).getName() + "}), " + variables.at(1).getName() + ", " + variables.at(0).getName() + ");\n";
+			toReturn = "SMUX2x1 #(.DATAWIDTH(Int" + std::to_string(datawidth) + ")) mux" + to_string(num) + "($signed({1'b1," + variables.at(2).getName() + "}), $signed({1'b1," + variables.at(3).getName() + "}), " + variables.at(1).getName() + ", " + variables.at(0).getName() + ");\n";
 	}
 	else if (operand.compare(">>") == 0) {    //SHR
 		toReturn = "SSHR #(.DATAWIDTH(Int" + std::to_string(datawidth) + ")) shr" + to_string(num) + "(" + variables.at(1).getName() + ", " + variables.at(2).getName() + ", " + variables.at(0).getName() + ");\n";
@@ -322,21 +322,21 @@ string callSignedOperator(vector<Variable> variables, string operand, int num, i
 		if (flagSignedExtend == 0)
 			toReturn = "SDIV#(.DATAWIDTH(Int" + std::to_string(datawidth) + "))  div" + to_string(num) + "(" + variables.at(1).getName() + ", " + variables.at(2).getName() + ", " + variables.at(0).getName() + ");\n";
 		else if (flagSignedExtend == 1)
-			toReturn = "SDIV#(.DATAWIDTH(Int" + std::to_string(datawidth) + "))  div" + to_string(num) + "($signed({1'b0," + variables.at(1).getName() + "}), " + variables.at(2).getName() + ", " + variables.at(0).getName() + ");\n";
+			toReturn = "SDIV#(.DATAWIDTH(Int" + std::to_string(datawidth) + "))  div" + to_string(num) + "($signed({1'b1," + variables.at(1).getName() + "}), " + variables.at(2).getName() + ", " + variables.at(0).getName() + ");\n";
 		else if (flagSignedExtend == 2)
-			toReturn = "SDIV#(.DATAWIDTH(Int" + std::to_string(datawidth) + "))  div" + to_string(num) + "(" + variables.at(1).getName() + ", $signed({1'b0," + variables.at(2).getName() + "}), " + variables.at(0).getName() + ");\n";
+			toReturn = "SDIV#(.DATAWIDTH(Int" + std::to_string(datawidth) + "))  div" + to_string(num) + "(" + variables.at(1).getName() + ", $signed({1'b1," + variables.at(2).getName() + "}), " + variables.at(0).getName() + ");\n";
 		else
-			toReturn = "SDIV#(.DATAWIDTH(Int" + std::to_string(datawidth) + "))  div" + to_string(num) + "($signed({1'b0," + variables.at(1).getName() + "}), $signed({1'b0," + variables.at(2).getName() + "}), " + variables.at(0).getName() + ");\n";
+			toReturn = "SDIV#(.DATAWIDTH(Int" + std::to_string(datawidth) + "))  div" + to_string(num) + "($signed({1'b1," + variables.at(1).getName() + "}), $signed({1'b1," + variables.at(2).getName() + "}), " + variables.at(0).getName() + ");\n";
 	}
 	else if (operand.compare("%") == 0) {    //MOD
 		if (flagSignedExtend == 0)
 			toReturn = "SMOD #(.DATAWIDTH(Int" + std::to_string(datawidth) + ")) mod" + to_string(num) + "(" + variables.at(1).getName() + ", " + variables.at(2).getName() + ", " + variables.at(0).getName() + ");\n";
 		else if (flagSignedExtend == 1)
-			toReturn = "SMOD #(.DATAWIDTH(Int" + std::to_string(datawidth) + ")) mod" + to_string(num) + "($signed({1'b0," + variables.at(1).getName() + "}), " + variables.at(2).getName() + ", " + variables.at(0).getName() + ");\n";
+			toReturn = "SMOD #(.DATAWIDTH(Int" + std::to_string(datawidth) + ")) mod" + to_string(num) + "($signed({1'b1," + variables.at(1).getName() + "}), " + variables.at(2).getName() + ", " + variables.at(0).getName() + ");\n";
 		else if (flagSignedExtend == 2)
-			toReturn = "SMOD #(.DATAWIDTH(Int" + std::to_string(datawidth) + ")) mod" + to_string(num) + "(" + variables.at(1).getName() + ", $signed({1'b0, " + variables.at(2).getName() + "}), " + variables.at(0).getName() + ");\n";
+			toReturn = "SMOD #(.DATAWIDTH(Int" + std::to_string(datawidth) + ")) mod" + to_string(num) + "(" + variables.at(1).getName() + ", $signed({1'b1, " + variables.at(2).getName() + "}), " + variables.at(0).getName() + ");\n";
 		else
-			toReturn = "SMOD #(.DATAWIDTH(Int" + std::to_string(datawidth) + ")) mod" + to_string(num) + "($signed({1'b0, " + variables.at(1).getName() + "}), $signed({1'b0, " + variables.at(2).getName() + "}), " + variables.at(0).getName() + ");\n";
+			toReturn = "SMOD #(.DATAWIDTH(Int" + std::to_string(datawidth) + ")) mod" + to_string(num) + "($signed({1'b1, " + variables.at(1).getName() + "}), $signed({1'b1, " + variables.at(2).getName() + "}), " + variables.at(0).getName() + ");\n";
 	}
 	else if (operand.compare("++") == 0) {    //INC UPDATE: needs to be tested
 		toReturn = "SINC #(.DATAWIDTH(Int" + std::to_string(datawidth) + ")) inc" + to_string(num) + "(" + variables.at(1).getName() + ", " + variables.at(0).getName() + ");\n";
