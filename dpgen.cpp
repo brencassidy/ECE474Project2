@@ -151,6 +151,7 @@ int main(int argc, char *argv[]) {
 					if (count == 0 || count == 2 || count == 4 || count == 6) {
 						for (i = 0; i < allVariables.size(); i++) {
 							//Make sure var exists
+                            validVar = false; //reset validVar flag after each iteration otherwise one valid var will make whole circuit "valid"
 							if (allVariables.at(i).getName().compare(val) == 0) {
 								//Default is signed, swap flag on unsigned
 								if (allVariables[i].getUnSigned() == true)
