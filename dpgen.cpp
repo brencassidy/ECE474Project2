@@ -402,7 +402,7 @@ string callSignedOperator(vector<Variable> variables, string operand, int num, i
 	return toReturn;
 
 }
-string callUnsignedOperator(vector<Variable> variables, string operand, int num, int datawidth, int flagSignedExtend, int flagSignedExtendVar1, int flagSignedExtendVar2) {
+string callUnsignedOperator(vector<Variable> variables, string operand, int num, int datawidth, int flagSignedExtendVar1, int flagSignedExtendVar2) {
 	string toReturn;
 	if (operand.compare("=") == 0) {    //REG
 		toReturn = "REG #(.DATAWIDTH(Int" + std::to_string(datawidth) + ")) reg" + std::to_string(num) + "(" + variables.at(1).getName() + ", " + variables.at(0).getName() + ");\n";
