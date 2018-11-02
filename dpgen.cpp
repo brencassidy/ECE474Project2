@@ -255,7 +255,7 @@ string callSignedOperator(vector<Variable> variables, string operand, int num, i
 			toReturn += "($signed({1'b1," + variables.at(1).getName() + "}), ";
 		else if (flagSignedExtendVar1 == 2)	//Add $signed1'b0 to var(1)
 			toReturn += "($signed({1'b0," + variables.at(1).getName() + "}), ";
-		else if(flagSignedExtendVar2 == 0)	//Do not add $signed to var 2
+		if(flagSignedExtendVar2 == 0)	//Do not add $signed to var 2
 			toReturn += variables.at(2).getName() + ", " + variables.at(0).getName() + ");\n";
 		else if (flagSignedExtendVar2 == 1) //Add $signed1'b1 to var(2)
 			toReturn += "$signed({ 1'b1, " + variables.at(2).getName() + "}), " + variables.at(0).getName() + ");\n";
@@ -270,7 +270,7 @@ string callSignedOperator(vector<Variable> variables, string operand, int num, i
 			toReturn += "($signed({1'b1," + variables.at(1).getName() + "}), ";
 		else if (flagSignedExtendVar1 == 2)	
 			toReturn += "($signed({1'b0," + variables.at(1).getName() + "}), ";
-		else if (flagSignedExtendVar2 == 0)	
+		if (flagSignedExtendVar2 == 0)	
 			toReturn += variables.at(2).getName() + ", " + variables.at(0).getName() + ");\n";
 		else if (flagSignedExtendVar2 == 1)
 			toReturn += "$signed({ 1'b1, " + variables.at(2).getName() + "}), " + variables.at(0).getName() + ");\n";
@@ -285,7 +285,7 @@ string callSignedOperator(vector<Variable> variables, string operand, int num, i
 			toReturn += "($signed({1'b1," + variables.at(1).getName() + "}), ";
 		else if (flagSignedExtendVar1 == 2)
 			toReturn += "($signed({1'b0," + variables.at(1).getName() + "}), ";
-		else if (flagSignedExtendVar2 == 0)	
+		if (flagSignedExtendVar2 == 0)	
 			toReturn += variables.at(2).getName() + ", " + variables.at(0).getName() + ");\n";
 		else if (flagSignedExtendVar2 == 1) 
 			toReturn += "$signed({ 1'b1, " + variables.at(2).getName() + "}), " + variables.at(0).getName() + ");\n";
@@ -300,7 +300,7 @@ string callSignedOperator(vector<Variable> variables, string operand, int num, i
 			toReturn += "($signed({1'b1," + variables.at(1).getName() + "}), ";
 		else if (flagSignedExtendVar1 == 2)
 			toReturn += "($signed({1'b0," + variables.at(1).getName() + "}), ";
-		else if (flagSignedExtendVar2 == 0)
+		if (flagSignedExtendVar2 == 0)
 			toReturn += variables.at(2).getName() + ", " + variables.at(0).getName() + ", 0, 0);\n";
 		else if (flagSignedExtendVar2 == 1)
 			toReturn += "$signed({ 1'b1, " + variables.at(2).getName() + "}), " + variables.at(0).getName() + ", 0, 0);\n";
@@ -315,7 +315,7 @@ string callSignedOperator(vector<Variable> variables, string operand, int num, i
 			toReturn += "($signed({1'b1," + variables.at(1).getName() + "}), ";
 		else if (flagSignedExtendVar1 == 2)
 			toReturn += "($signed({1'b0," + variables.at(1).getName() + "}), ";
-		else if (flagSignedExtendVar2 == 0)
+		if (flagSignedExtendVar2 == 0)
 			toReturn += variables.at(2).getName() + ", 0, " + variables.at(0).getName() + ", 0);\n";
 		else if (flagSignedExtendVar2 == 1)
 			toReturn += "$signed({ 1'b1, " + variables.at(2).getName() + "}), 0, " + variables.at(0).getName() + ", 0);\n";
@@ -330,7 +330,7 @@ string callSignedOperator(vector<Variable> variables, string operand, int num, i
 			toReturn += "($signed({1'b1," + variables.at(1).getName() + "}), ";
 		else if (flagSignedExtendVar1 == 2)
 			toReturn += "($signed({1'b0," + variables.at(1).getName() + "}), ";
-		else if (flagSignedExtendVar2 == 0)
+		if (flagSignedExtendVar2 == 0)
 			toReturn += variables.at(2).getName() + ", 0, 0, " + variables.at(0).getName() + ");\n";
 		else if (flagSignedExtendVar2 == 1)
 			toReturn += "$signed({ 1'b1, " + variables.at(2).getName() + "}), 0, 0, " + variables.at(0).getName() + ");\n";
@@ -345,7 +345,7 @@ string callSignedOperator(vector<Variable> variables, string operand, int num, i
 			toReturn += "($signed({1'b1," + variables.at(1).getName() + "}), ";
 		else if (flagSignedExtendVar1 == 2)
 			toReturn += "($signed({1'b0," + variables.at(1).getName() + "}), ";
-		else if (flagSignedExtendVar2 == 0)
+		if (flagSignedExtendVar2 == 0)
 			toReturn += variables.at(2).getName() + ", " + variables.at(1).getName() + ", " + variables.at(0).getName() + ");\n";
 		else if (flagSignedExtendVar2 == 1)
 			toReturn += "$signed({ 1'b1, " + variables.at(2).getName() + ", " + variables.at(1).getName() + ", " + variables.at(0).getName() + ");\n";
@@ -366,7 +366,7 @@ string callSignedOperator(vector<Variable> variables, string operand, int num, i
 			toReturn += "($signed({1'b1," + variables.at(1).getName() + "}), ";
 		else if (flagSignedExtendVar1 == 2)
 			toReturn += "($signed({1'b0," + variables.at(1).getName() + "}), ";
-		else if (flagSignedExtendVar2 == 0)
+		if (flagSignedExtendVar2 == 0)
 			toReturn += variables.at(2).getName() + ", " + variables.at(0).getName() + ");\n";
 		else if (flagSignedExtendVar2 == 1)
 			toReturn += "$signed({ 1'b1, " + variables.at(2).getName() + "}), " + variables.at(0).getName() + ");\n";
@@ -382,7 +382,7 @@ string callSignedOperator(vector<Variable> variables, string operand, int num, i
 			toReturn += "($signed({1'b1," + variables.at(1).getName() + "}), ";
 		else if (flagSignedExtendVar1 == 2)
 			toReturn += "($signed({1'b0," + variables.at(1).getName() + "}), ";
-		else if (flagSignedExtendVar2 == 0)
+		if (flagSignedExtendVar2 == 0)
 			toReturn += variables.at(2).getName() + ", " + variables.at(0).getName() + ");\n";
 		else if (flagSignedExtendVar2 == 1)
 			toReturn += "$signed({ 1'b1, " + variables.at(2).getName() + "}), " + variables.at(0).getName() + ");\n";
@@ -416,7 +416,7 @@ string callUnsignedOperator(vector<Variable> variables, string operand, int num,
 			toReturn += "($signed({1'b1," + variables.at(1).getName() + "}), ";
 		else if (flagSignedExtendVar1 == 2)	//Add $signed1'b0 to var(1)
 			toReturn += "($signed({1'b0," + variables.at(1).getName() + "}), ";
-		else if (flagSignedExtendVar2 == 0)	//Do not add $signed to var 2
+		if (flagSignedExtendVar2 == 0)	//Do not add $signed to var 2
 			toReturn += variables.at(2).getName() + ", " + variables.at(0).getName() + ");\n";
 		else if (flagSignedExtendVar2 == 1) //Add $signed1'b1 to var(2)
 			toReturn += "$signed({ 1'b1, " + variables.at(2).getName() + "}), " + variables.at(0).getName() + ");\n";
@@ -431,7 +431,7 @@ string callUnsignedOperator(vector<Variable> variables, string operand, int num,
 			toReturn += "($signed({1'b1," + variables.at(1).getName() + "}), ";
 		else if (flagSignedExtendVar1 == 2)
 			toReturn += "($signed({1'b0," + variables.at(1).getName() + "}), ";
-		else if (flagSignedExtendVar2 == 0)
+		if (flagSignedExtendVar2 == 0)
 			toReturn += variables.at(2).getName() + ", " + variables.at(0).getName() + ");\n";
 		else if (flagSignedExtendVar2 == 1)
 			toReturn += "$signed({ 1'b1, " + variables.at(2).getName() + "}), " + variables.at(0).getName() + ");\n";
@@ -446,7 +446,7 @@ string callUnsignedOperator(vector<Variable> variables, string operand, int num,
 			toReturn += "($signed({1'b1," + variables.at(1).getName() + "}), ";
 		else if (flagSignedExtendVar1 == 2)
 			toReturn += "($signed({1'b0," + variables.at(1).getName() + "}), ";
-		else if (flagSignedExtendVar2 == 0)
+		if (flagSignedExtendVar2 == 0)
 			toReturn += variables.at(2).getName() + ", " + variables.at(0).getName() + ");\n";
 		else if (flagSignedExtendVar2 == 1)
 			toReturn += "$signed({ 1'b1, " + variables.at(2).getName() + "}), " + variables.at(0).getName() + ");\n";
@@ -461,7 +461,7 @@ string callUnsignedOperator(vector<Variable> variables, string operand, int num,
 			toReturn += "($signed({1'b1," + variables.at(1).getName() + "}), ";
 		else if (flagSignedExtendVar1 == 2)
 			toReturn += "($signed({1'b0," + variables.at(1).getName() + "}), ";
-		else if (flagSignedExtendVar2 == 0)
+		if (flagSignedExtendVar2 == 0)
 			toReturn += variables.at(2).getName() + ", " + variables.at(0).getName() + ", 0, 0);\n";
 		else if (flagSignedExtendVar2 == 1)
 			toReturn += "$signed({ 1'b1, " + variables.at(2).getName() + "}), " + variables.at(0).getName() + ", 0, 0);\n";
@@ -476,7 +476,7 @@ string callUnsignedOperator(vector<Variable> variables, string operand, int num,
 			toReturn += "($signed({1'b1," + variables.at(1).getName() + "}), ";
 		else if (flagSignedExtendVar1 == 2)
 			toReturn += "($signed({1'b0," + variables.at(1).getName() + "}), ";
-		else if (flagSignedExtendVar2 == 0)
+		if (flagSignedExtendVar2 == 0)
 			toReturn += variables.at(2).getName() + ", 0, " + variables.at(0).getName() + ", 0);\n";
 		else if (flagSignedExtendVar2 == 1)
 			toReturn += "$signed({ 1'b1, " + variables.at(2).getName() + "}), 0, " + variables.at(0).getName() + ", 0);\n";
@@ -491,7 +491,7 @@ string callUnsignedOperator(vector<Variable> variables, string operand, int num,
 			toReturn += "($signed({1'b1," + variables.at(1).getName() + "}), ";
 		else if (flagSignedExtendVar1 == 2)
 			toReturn += "($signed({1'b0," + variables.at(1).getName() + "}), ";
-		else if (flagSignedExtendVar2 == 0)
+		if (flagSignedExtendVar2 == 0)
 			toReturn += variables.at(2).getName() + ", 0, 0, " + variables.at(0).getName() + ");\n";
 		else if (flagSignedExtendVar2 == 1)
 			toReturn += "$signed({ 1'b1, " + variables.at(2).getName() + "}), 0, 0, " + variables.at(0).getName() + ");\n";
@@ -506,7 +506,7 @@ string callUnsignedOperator(vector<Variable> variables, string operand, int num,
 			toReturn += "($signed({1'b1," + variables.at(1).getName() + "}), ";
 		else if (flagSignedExtendVar1 == 2)
 			toReturn += "($signed({1'b0," + variables.at(1).getName() + "}), ";
-		else if (flagSignedExtendVar2 == 0)
+		if (flagSignedExtendVar2 == 0)
 			toReturn += variables.at(2).getName() + ", " + variables.at(1).getName() + ", " + variables.at(0).getName() + ");\n";
 		else if (flagSignedExtendVar2 == 1)
 			toReturn += "$signed({ 1'b1, " + variables.at(2).getName() + ", " + variables.at(1).getName() + ", " + variables.at(0).getName() + ");\n";
@@ -527,7 +527,7 @@ string callUnsignedOperator(vector<Variable> variables, string operand, int num,
 			toReturn += "($signed({1'b1," + variables.at(1).getName() + "}), ";
 		else if (flagSignedExtendVar1 == 2)
 			toReturn += "($signed({1'b0," + variables.at(1).getName() + "}), ";
-		else if (flagSignedExtendVar2 == 0)
+		if (flagSignedExtendVar2 == 0)
 			toReturn += variables.at(2).getName() + ", " + variables.at(0).getName() + ");\n";
 		else if (flagSignedExtendVar2 == 1)
 			toReturn += "$signed({ 1'b1, " + variables.at(2).getName() + "}), " + variables.at(0).getName() + ");\n";
@@ -543,7 +543,7 @@ string callUnsignedOperator(vector<Variable> variables, string operand, int num,
 			toReturn += "($signed({1'b1," + variables.at(1).getName() + "}), ";
 		else if (flagSignedExtendVar1 == 2)
 			toReturn += "($signed({1'b0," + variables.at(1).getName() + "}), ";
-		else if (flagSignedExtendVar2 == 0)
+		if (flagSignedExtendVar2 == 0)
 			toReturn += variables.at(2).getName() + ", " + variables.at(0).getName() + ");\n";
 		else if (flagSignedExtendVar2 == 1)
 			toReturn += "$signed({ 1'b1, " + variables.at(2).getName() + "}), " + variables.at(0).getName() + ");\n";
