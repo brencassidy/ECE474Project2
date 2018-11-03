@@ -4,3 +4,6 @@
 ## compiled stuff ##
 *.exe
 *.txt
+
+## other ##
+*.bat

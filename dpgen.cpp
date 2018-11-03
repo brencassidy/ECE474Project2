@@ -293,7 +293,7 @@ string callSignedOperator(vector<Variable> variables, string operand, int num, i
 			toReturn += "$signed({ 1'b0, " + variables.at(2).getName() + "}), " + variables.at(0).getName() + ");\n";
 	}
 	else if (operand.compare(">") == 0) {    //COMP (gt output)
-		toReturn = "SCOMP  #(.DATAWIDTH(Int" + std::to_string(datawidth) + ")) comp" + to_string(num);
+		toReturn = "SCOMP #(.DATAWIDTH(Int" + std::to_string(datawidth) + ")) comp" + to_string(num);
 		if (flagSignedExtendVar1 == 0)
 			toReturn += "(" + variables.at(1).getName() + ", ";
 		else if (flagSignedExtendVar1 == 1)
@@ -308,7 +308,7 @@ string callSignedOperator(vector<Variable> variables, string operand, int num, i
 			toReturn += "$signed({ 1'b0, " + variables.at(2).getName() + "}), " + variables.at(0).getName() + ", 0, 0);\n";
 	}
 	else if (operand.compare("<") == 0) {    //COMP (lt output)
-		toReturn = "SCOMP  #(.DATAWIDTH(Int" + std::to_string(datawidth) + ")) comp" + to_string(num);
+		toReturn = "SCOMP #(.DATAWIDTH(Int" + std::to_string(datawidth) + ")) comp" + to_string(num);
 		if (flagSignedExtendVar1 == 0)
 			toReturn += "(" + variables.at(1).getName() + ", ";
 		else if (flagSignedExtendVar1 == 1)
@@ -323,7 +323,7 @@ string callSignedOperator(vector<Variable> variables, string operand, int num, i
 			toReturn += "$signed({ 1'b0, " + variables.at(2).getName() + "}), 0, " + variables.at(0).getName() + ", 0);\n";
 	}
 	else if (operand.compare("==") == 0) {    //COMP (eq output)
-		toReturn = "SCOMP  #(.DATAWIDTH(Int" + std::to_string(datawidth) + ")) comp" + to_string(num);
+		toReturn = "SCOMP #(.DATAWIDTH(Int" + std::to_string(datawidth) + ")) comp" + to_string(num);
 		if (flagSignedExtendVar1 == 0)
 			toReturn += "(" + variables.at(1).getName() + ", ";
 		else if (flagSignedExtendVar1 == 1)
