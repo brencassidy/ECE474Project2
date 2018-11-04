@@ -42,7 +42,7 @@ int main(int argc, char *argv[]) {
 	}
 
 	int i, maxDatawidth, pos, flagExtendLocVar1, flagExtendLocVar2, operandCount = 0, count = 0;
-	bool operation, signedFlag, flagIncDec, validVar = false;
+	bool signedFlag, flagIncDec, validVar = false;
 
 	//Step 1: Read file input line by line
 	ifstream iFile;
@@ -69,7 +69,6 @@ int main(int argc, char *argv[]) {
 			maxDatawidth = 0;
 			flagExtendLocVar1 = 0;
 			flagExtendLocVar2 = 0;
-			operation = false;
 			signedFlag = true;
 			flagIncDec = false;
 			validVar = false;
